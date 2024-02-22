@@ -10,17 +10,20 @@ import (
 
 type App struct {
 	router http.Handler
+	handler func()
 }
 
 func New() *App {
 	return &App{
 		router: loadRoutes(),
+		handler: loadHandlers,
 	}
 }
 
 func (a *App) Start(ctx context.Context) error {
 	utils.DBConnection()
 
+	a.handler()
 	server := &http.Server{
 		Addr: os.Getenv("PORT"),
 		Handler: a.router,
