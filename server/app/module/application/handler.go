@@ -27,7 +27,7 @@ func (h ApplicationHandler) CreateHandler()  {
 	}
 
 	ctx := context.Background()
-	messages, err := queue.ConsumeWithContext(ctx, "create", "application", true, false, false, false, nil)
+	messages, err := queue.ConsumeWithContext(ctx, "app.create", "application", true, false, false, false, nil)
 
 	if err != nil {
 		fmt.Println(err)
