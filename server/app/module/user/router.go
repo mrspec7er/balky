@@ -9,5 +9,5 @@ import (
 func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup)  {
 	a := &UserHandler{}
 
-	a.CreateHandler(q, wg)
+	a.CreateHandler(q, wg, "user.create", "user")
 }

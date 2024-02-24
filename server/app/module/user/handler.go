@@ -14,11 +14,11 @@ type UserHandler struct {
 	service UserService
 }
 
-func (h UserHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup)  {
+func (h UserHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string)  {
 	defer wg.Done()
 
 	ctx := context.Background()
-	messages, err := queue.ConsumeWithContext(ctx, "user.create", "user", true, false, false, false, nil)
+	messages, err := queue.ConsumeWithContext(ctx, queueName, consumerTag, true, false, false, false, nil)
 
 	if err != nil {
 		fmt.Println(err)
