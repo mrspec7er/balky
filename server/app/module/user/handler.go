@@ -14,7 +14,7 @@ type UserHandler struct {
 	service UserService
 }
 
-func (h UserHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string)  {
+func (h *UserHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
 	defer wg.Done()
 
 	ctx := context.Background()
@@ -31,7 +31,11 @@ func (h UserHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup, q
 		if err != nil {
 			fmt.Println(err)
 		}
-		
-		h.service.CreateService(user)
+
+		status, err := h.service.CreateService(user)
+
+		if err != nil {
+			fmt.Println(status, err)
+		}
 	}
 }

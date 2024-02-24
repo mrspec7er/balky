@@ -3,19 +3,20 @@ package app
 import (
 	"context"
 	"net/http"
-	"os"
 
+	"github.com/mrspec7er/balky/app/model"
 	"github.com/mrspec7er/balky/app/utils"
+	"gorm.io/gorm"
 )
 
 type App struct {
-	router http.Handler
+	router       http.Handler
 	dataListener func()
 }
 
 func New() *App {
 	return &App{
-		router: loadRoutes(),
+		router:       loadRoutes(),
 		dataListener: loadListener,
 	}
 }
@@ -23,10 +24,12 @@ func New() *App {
 func (a *App) Start(ctx context.Context) error {
 	utils.DBConnection()
 
-	a.dataListener()
-	
+	Migration(utils.DB)
+
+	go a.dataListener()
+
 	server := &http.Server{
-		Addr: os.Getenv("PORT"),
+		Addr:    ":8080",
 		Handler: a.router,
 	}
 
@@ -36,4 +39,14 @@ func (a *App) Start(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func Migration(db *gorm.DB) {
+	db.AutoMigrate(
+		&model.Application{},
+		&model.User{},
+		&model.ReportMaster{},
+		&model.Attribute{},
+		&model.Content{},
+	)
 }

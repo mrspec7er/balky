@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mrspec7er/balky/app/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -19,17 +18,5 @@ func DBConnection() {
 		panic(err.Error())
 	}
 
-	Migration(connection)
-
 	DB = connection
-}
-
-func Migration(db *gorm.DB)  {
-	db.AutoMigrate(
-		&model.Application{},
-		&model.User{},
-		&model.ReportMaster{},
-		&model.Attribute{},
-		&model.Content{},
-	)
 }
