@@ -19,7 +19,7 @@ func init() {
 func main() {
 	server := app.New()
 
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)	
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 
 	err := server.Start(ctx)

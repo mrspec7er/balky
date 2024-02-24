@@ -7,17 +7,17 @@ import (
 )
 
 type Application struct {
-	Number		string		   `json:"number" gorm:"primaryKey"`
-	Status	 	string 		   `json:"status" gorm:"type:varchar(32)"`
-	CreatedAt   time.Time      `json:"createdAt"`
-	UpdatedAt   time.Time      `json:"updatedAt"`
-	DeletedAt	gorm.DeletedAt `json:"deletedAt" gorm:"index"`
+	Number    string         `json:"number" gorm:"primaryKey"`
+	Status    string         `json:"status" gorm:"type:varchar(32)"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 
 	ReportMasterID uint
-	ReportMaster *ReportMaster `json:"reportMaster"`
+	ReportMaster   *ReportMaster `json:"reportMaster"`
 
 	Contents []*Content `json:"contents"`
 
 	UserID uint
-	User *User `json:"user"`
+	User   *User `json:"user"`
 }

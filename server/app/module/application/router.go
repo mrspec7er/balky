@@ -6,7 +6,7 @@ import (
 	"github.com/rabbitmq/amqp091-go"
 )
 
-func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup)  {
+func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup) {
 	a := &ApplicationHandler{}
 
 	a.CreateHandler(q, wg, "app.create", "application")

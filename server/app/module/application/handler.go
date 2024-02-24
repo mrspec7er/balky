@@ -14,7 +14,7 @@ type ApplicationHandler struct {
 	service ApplicationService
 }
 
-func (h ApplicationHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string)  {
+func (h ApplicationHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
 	defer wg.Done()
 
 	ctx := context.Background()
@@ -31,7 +31,7 @@ func (h ApplicationHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitG
 		if err != nil {
 			fmt.Println(err)
 		}
-		
+
 		h.service.CreateService(app)
 	}
 }

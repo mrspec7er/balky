@@ -37,7 +37,7 @@ func loadListener() {
 	fmt.Println("All consumers closed.")
 }
 
-func listenerConfig(ch *amqp091.Channel, wg *sync.WaitGroup)  {
+func listenerConfig(ch *amqp091.Channel, wg *sync.WaitGroup) {
 	wg.Add(1)
 	go user.HandlerConfig(ch, wg)
 
