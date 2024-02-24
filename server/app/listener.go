@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"sync"
 
+	"github.com/mrspec7er/balky/app/module/application"
 	"github.com/mrspec7er/balky/app/module/user"
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -39,4 +40,7 @@ func loadListener() {
 func listenerConfig(ch *amqp091.Channel, wg *sync.WaitGroup)  {
 	wg.Add(1)
 	go user.HandlerConfig(ch, wg)
+
+	wg.Add(1)
+	go application.HandlerConfig(ch, wg)
 }
