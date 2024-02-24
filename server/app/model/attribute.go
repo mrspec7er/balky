@@ -18,5 +18,5 @@ type Attribute struct {
 	ReportMasterID 	uint
 	ReportMaster 	*ReportMaster  `json:"reportMaster"`
 
-	Contents []*Content `json:"content"`
+	Contents []*Content `json:"contents"`
 }

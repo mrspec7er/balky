@@ -16,11 +16,8 @@ type Application struct {
 	ReportMasterID uint
 	ReportMaster *ReportMaster `json:"reportMaster"`
 
-	Contents []*Content `json:"content"`
+	Contents []*Content `json:"contents"`
 
 	UserID uint
 	User *User `json:"user"`
-
-	PicID uint
-	Pic *User `json:"pic" gorm:"foreignKey:PicID"`
 }
