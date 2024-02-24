@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"os"
+	"sync"
 
 	"github.com/mrspec7er/balky/app/model"
 	"github.com/rabbitmq/amqp091-go"
@@ -14,17 +14,8 @@ type ApplicationHandler struct {
 	service ApplicationService
 }
 
-func (h ApplicationHandler) CreateHandler()  {
-	conn, err := amqp091.Dial(os.Getenv("MESSAGE_BROKER_URI"))
-	if err != nil {
-		panic(err)
-	}
-	defer conn.Close()
-
-	queue, err := conn.Channel()
-	if err != nil {
-		panic(err)
-	}
+func (h ApplicationHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup)  {
+	defer wg.Done()
 
 	ctx := context.Background()
 	messages, err := queue.ConsumeWithContext(ctx, "app.create", "application", true, false, false, false, nil)
