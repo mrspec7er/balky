@@ -14,11 +14,11 @@ type ApplicationHandler struct {
 	service ApplicationService
 }
 
-func (h ApplicationHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup)  {
+func (h ApplicationHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string)  {
 	defer wg.Done()
 
 	ctx := context.Background()
-	messages, err := queue.ConsumeWithContext(ctx, "app.create", "application", true, false, false, false, nil)
+	messages, err := queue.ConsumeWithContext(ctx, queueName, consumerTag, true, false, false, false, nil)
 
 	if err != nil {
 		fmt.Println(err)
