@@ -1,6 +1,7 @@
 package application
 
 import (
+	"os"
 	"sync"
 
 	"github.com/rabbitmq/amqp091-go"
@@ -9,5 +10,6 @@ import (
 func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup) {
 	a := &ApplicationListener{}
 
-	a.CreateListener(q, wg, "app.create", "application")
+	wg.Add(1)
+	go a.CreateListener(q, wg, "app.create", "app.create."+os.Getenv("SERVER_ID"))
 }

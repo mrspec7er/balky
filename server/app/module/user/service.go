@@ -26,3 +26,13 @@ func (s UserService) FindManyService() ([]model.User, int, error) {
 
 	return users, 201, nil
 }
+
+func (s UserService) DeleteService(req *model.User) (int, error) {
+	s.user = *req
+	err := s.user.Delete()
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}

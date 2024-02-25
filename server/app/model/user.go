@@ -35,3 +35,8 @@ func (u *User) FindMany() ([]User, error) {
 	err := u.store().Find(&users).Error
 	return users, err
 }
+
+func (u *User) Delete() error {
+	err := u.store().Delete(&u).Error
+	return err
+}

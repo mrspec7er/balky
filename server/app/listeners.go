@@ -38,9 +38,6 @@ func loadListeners() {
 }
 
 func listenersConfig(ch *amqp091.Channel, wg *sync.WaitGroup) {
-	wg.Add(1)
-	go user.HandlerConfig(ch, wg)
-
-	wg.Add(1)
-	go application.HandlerConfig(ch, wg)
+	user.HandlerConfig(ch, wg)
+	application.HandlerConfig(ch, wg)
 }
