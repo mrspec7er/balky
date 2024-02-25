@@ -22,4 +22,5 @@ func RouteConfig(router chi.Router) {
 	controller := &UserController{}
 
 	router.Get("/", controller.FindAllController)
+	router.Post("/", controller.CreateController)
 }
