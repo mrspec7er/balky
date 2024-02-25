@@ -14,7 +14,7 @@ type UserListener struct {
 	service UserService
 }
 
-func (h *UserListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
+func (l *UserListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
 	defer wg.Done()
 
 	ctx := context.Background()
@@ -32,14 +32,14 @@ func (h *UserListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup, queueN
 			fmt.Println(err)
 		}
 
-		status, err := h.service.Create(user)
+		status, err := l.service.Create(user)
 		if err != nil {
 			fmt.Println(status, err)
 		}
 	}
 }
 
-func (h *UserListener) DeleteListener(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
+func (l *UserListener) DeleteListener(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
 	defer wg.Done()
 
 	ctx := context.Background()
@@ -57,7 +57,7 @@ func (h *UserListener) DeleteListener(queue *amqp091.Channel, wg *sync.WaitGroup
 			fmt.Println(err)
 		}
 
-		status, err := h.service.Delete(user)
+		status, err := l.service.Delete(user)
 		if err != nil {
 			fmt.Println(status, err)
 		}
