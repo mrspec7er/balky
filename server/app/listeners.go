@@ -11,7 +11,7 @@ import (
 	"github.com/rabbitmq/amqp091-go"
 )
 
-func loadListener() {
+func loadListeners() {
 	conn, err := amqp091.Dial(os.Getenv("MESSAGE_BROKER_URI"))
 	if err != nil {
 		panic(err)
@@ -26,7 +26,7 @@ func loadListener() {
 
 	wg := sync.WaitGroup{}
 
-	listenerConfig(ch, &wg)
+	listenersConfig(ch, &wg)
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt)
@@ -37,7 +37,7 @@ func loadListener() {
 	fmt.Println("All consumers closed.")
 }
 
-func listenerConfig(ch *amqp091.Channel, wg *sync.WaitGroup) {
+func listenersConfig(ch *amqp091.Channel, wg *sync.WaitGroup) {
 	wg.Add(1)
 	go user.HandlerConfig(ch, wg)
 

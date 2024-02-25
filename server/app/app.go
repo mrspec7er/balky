@@ -17,7 +17,7 @@ type App struct {
 func New() *App {
 	return &App{
 		router:       loadRoutes(),
-		dataListener: loadListener,
+		dataListener: loadListeners,
 	}
 }
 

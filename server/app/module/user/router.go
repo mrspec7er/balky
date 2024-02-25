@@ -8,9 +8,9 @@ import (
 )
 
 func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup) {
-	a := &UserHandler{}
+	a := &UserListener{}
 
-	a.CreateHandler(q, wg, "user.create", "user")
+	a.CreateListener(q, wg, "user.create", "user")
 }
 
 func RouteConfig(router chi.Router) {

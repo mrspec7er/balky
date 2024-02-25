@@ -7,7 +7,7 @@ import (
 )
 
 func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup) {
-	a := &ApplicationHandler{}
+	a := &ApplicationListener{}
 
-	a.CreateHandler(q, wg, "app.create", "application")
+	a.CreateListener(q, wg, "app.create", "application")
 }

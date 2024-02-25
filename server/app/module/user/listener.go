@@ -1,4 +1,4 @@
-package application
+package user
 
 import (
 	"context"
@@ -10,11 +10,11 @@ import (
 	"github.com/rabbitmq/amqp091-go"
 )
 
-type ApplicationHandler struct {
-	service ApplicationService
+type UserListener struct {
+	service UserService
 }
 
-func (h ApplicationHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
+func (h *UserListener) CreateListener(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
 	defer wg.Done()
 
 	ctx := context.Background()
@@ -25,13 +25,17 @@ func (h ApplicationHandler) CreateHandler(queue *amqp091.Channel, wg *sync.WaitG
 	}
 
 	for data := range messages {
-		app := &model.Application{}
+		user := &model.User{}
 
-		err := json.Unmarshal(data.Body, &app)
+		err := json.Unmarshal(data.Body, &user)
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		h.service.CreateService(app)
+		status, err := h.service.CreateService(user)
+
+		if err != nil {
+			fmt.Println(status, err)
+		}
 	}
 }
