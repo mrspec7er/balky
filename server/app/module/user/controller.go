@@ -16,8 +16,8 @@ type UserController struct {
 	publish  utils.Publisher
 }
 
-func (c *UserController) FindAllController(w http.ResponseWriter, r *http.Request) {
-	result, status, err := c.service.FindManyService()
+func (c *UserController) FindAll(w http.ResponseWriter, r *http.Request) {
+	result, status, err := c.service.FindMany()
 
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, status, err)
@@ -26,7 +26,7 @@ func (c *UserController) FindAllController(w http.ResponseWriter, r *http.Reques
 	c.response.GetSuccessResponse(w, nil, result, nil)
 }
 
-func (c *UserController) CreateController(w http.ResponseWriter, r *http.Request) {
+func (c *UserController) Create(w http.ResponseWriter, r *http.Request) {
 	user := &model.User{}
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
@@ -48,7 +48,7 @@ func (c *UserController) CreateController(w http.ResponseWriter, r *http.Request
 	c.response.SuccessMessageResponse(w, "Create user with email: "+user.Email)
 }
 
-func (c *UserController) DeleteController(w http.ResponseWriter, r *http.Request) {
+func (c *UserController) Delete(w http.ResponseWriter, r *http.Request) {
 	user := &model.User{}
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {

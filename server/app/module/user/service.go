@@ -8,7 +8,7 @@ type UserService struct {
 	user model.User
 }
 
-func (s UserService) CreateService(req *model.User) (int, error) {
+func (s UserService) Create(req *model.User) (int, error) {
 	s.user = *req
 	err := s.user.Create()
 	if err != nil {
@@ -18,7 +18,7 @@ func (s UserService) CreateService(req *model.User) (int, error) {
 	return 201, nil
 }
 
-func (s UserService) FindManyService() ([]model.User, int, error) {
+func (s UserService) FindMany() ([]model.User, int, error) {
 	users, err := s.user.FindMany()
 	if err != nil {
 		return nil, 500, err
@@ -27,7 +27,7 @@ func (s UserService) FindManyService() ([]model.User, int, error) {
 	return users, 201, nil
 }
 
-func (s UserService) DeleteService(req *model.User) (int, error) {
+func (s UserService) Delete(req *model.User) (int, error) {
 	s.user = *req
 	err := s.user.Delete()
 	if err != nil {

@@ -8,8 +8,8 @@ import (
 )
 
 func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup) {
-	a := &ApplicationListener{}
+	l := &ApplicationListener{}
 
 	wg.Add(1)
-	go a.CreateListener(q, wg, "app.create", "app.create."+os.Getenv("SERVER_ID"))
+	go l.Create(q, wg, "app.create", "app.create."+os.Getenv("SERVER_ID"))
 }

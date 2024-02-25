@@ -14,7 +14,7 @@ type ApplicationListener struct {
 	service ApplicationService
 }
 
-func (h ApplicationListener) CreateListener(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
+func (h ApplicationListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
 	defer wg.Done()
 
 	ctx := context.Background()
@@ -32,6 +32,6 @@ func (h ApplicationListener) CreateListener(queue *amqp091.Channel, wg *sync.Wai
 			fmt.Println(err)
 		}
 
-		h.service.CreateService(app)
+		h.service.Create(app)
 	}
 }
