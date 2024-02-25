@@ -23,4 +23,5 @@ func RouteConfig(router chi.Router) {
 
 	router.Get("/", controller.FindAllController)
 	router.Post("/", controller.CreateController)
+	router.Delete("/", controller.DeleteController)
 }
