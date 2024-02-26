@@ -1,0 +1,118 @@
+{
+  "rabbit_version": "3.12.12",
+  "rabbitmq_version": "3.12.12",
+  "product_name": "RabbitMQ",
+  "product_version": "3.12.12",
+  "users": [
+    {
+      "name": "mrspec7er",
+      "password_hash": "keePLuenb1erqJWZwPdNh95bM3aFxAJBhqmngRKLEaJ+6twH",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ["administrator"],
+      "limits": {}
+    },
+    {
+      "name": "guest",
+      "password_hash": "5pGq+/YIgGeZzC0RdXainNGZK6rXVGgHpErHNaxl7URZWhWL",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ["administrator"],
+      "limits": {}
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "mrspec7er",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "internal_cluster_id",
+      "value": "rabbitmq-cluster-id-Y7RtgibWp9tE0b4su4yLww"
+    }
+  ],
+  "policies": [],
+  "queues": [
+    {
+      "name": "user.delete",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
+      "name": "app.create",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
+      "name": "user.create",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "balky",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "balky",
+      "vhost": "/",
+      "destination": "app.create",
+      "destination_type": "queue",
+      "routing_key": "app.create",
+      "arguments": {}
+    },
+    {
+      "source": "balky",
+      "vhost": "/",
+      "destination": "user.create",
+      "destination_type": "queue",
+      "routing_key": "user.create",
+      "arguments": {}
+    },
+    {
+      "source": "balky",
+      "vhost": "/",
+      "destination": "user.delete",
+      "destination_type": "queue",
+      "routing_key": "user.delete",
+      "arguments": {}
+    }
+  ]
+}
