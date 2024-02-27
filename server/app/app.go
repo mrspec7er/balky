@@ -45,7 +45,7 @@ func Migration(db *gorm.DB) {
 	db.AutoMigrate(
 		&model.Application{},
 		&model.User{},
-		&model.ReportMaster{},
+		&model.MasterReport{},
 		&model.Attribute{},
 		&model.Content{},
 	)

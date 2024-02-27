@@ -15,8 +15,8 @@ type Attribute struct {
 	UpdatedAt  time.Time      `json:"updatedAt"`
 	DeletedAt  gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 
-	ReportMasterID uint
-	ReportMaster   *ReportMaster `json:"reportMaster"`
+	MasterReportID uint
+	MasterReport   *MasterReport `json:"masterReport"`
 
 	Contents []*Content `json:"contents"`
 }

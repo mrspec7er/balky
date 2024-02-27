@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type ReportMaster struct {
+type MasterReport struct {
 	ID        uint           `json:"id" gorm:"primaryKey"`
 	Name      string         `json:"name" gorm:"type:varchar(64)"`
 	IsActive  bool           `json:"isActive"`
@@ -19,22 +19,22 @@ type ReportMaster struct {
 	Attributes   []*Attribute   `json:"attributes"`
 }
 
-func (m *ReportMaster) store() *gorm.DB {
+func (m *MasterReport) store() *gorm.DB {
 	return utils.DB
 }
 
-func (m *ReportMaster) Create() error {
+func (m *MasterReport) Create() error {
 	err := m.store().Create(&m).Error
 	return err
 }
 
-func (m *ReportMaster) FindMany() ([]ReportMaster, error) {
-	masters := []ReportMaster{}
+func (m *MasterReport) FindMany() ([]MasterReport, error) {
+	masters := []MasterReport{}
 	err := m.store().Find(&masters).Error
 	return masters, err
 }
 
-func (m *ReportMaster) Delete() error {
+func (m *MasterReport) Delete() error {
 	err := m.store().Delete(&m).Error
 	return err
 }
