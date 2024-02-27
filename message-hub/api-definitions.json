@@ -69,7 +69,25 @@
       }
     },
     {
+      "name": "master.delete",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
       "name": "user.create",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
+      "name": "master.create",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
@@ -96,6 +114,22 @@
       "destination": "app.create",
       "destination_type": "queue",
       "routing_key": "app.create",
+      "arguments": {}
+    },
+    {
+      "source": "balky",
+      "vhost": "/",
+      "destination": "master.create",
+      "destination_type": "queue",
+      "routing_key": "master.create",
+      "arguments": {}
+    },
+    {
+      "source": "balky",
+      "vhost": "/",
+      "destination": "master.delete",
+      "destination_type": "queue",
+      "routing_key": "master.delete",
       "arguments": {}
     },
     {
