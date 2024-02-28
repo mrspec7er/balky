@@ -30,7 +30,6 @@ func (r Response) InternalServerErrorHandler(w http.ResponseWriter, status int, 
 	responseData, err := json.Marshal(response)
 	if err != nil {
 		r.InternalServerErrorHandler(w, 500, err)
-		return
 	}
 
 	w.WriteHeader(status)
@@ -54,7 +53,6 @@ func (r Response) NotFoundHandler(w http.ResponseWriter) {
 	responseData, err := json.Marshal(response)
 	if err != nil {
 		r.InternalServerErrorHandler(w, 500, err)
-		return
 	}
 
 	w.WriteHeader(http.StatusNotFound)
@@ -78,7 +76,6 @@ func (r Response) BadRequestHandler(w http.ResponseWriter) {
 	responseData, err := json.Marshal(response)
 	if err != nil {
 		r.InternalServerErrorHandler(w, 500, err)
-		return
 	}
 
 	w.WriteHeader(http.StatusBadRequest)
@@ -102,7 +99,6 @@ func (r Response) UnauthorizeUser(w http.ResponseWriter) {
 	responseData, err := json.Marshal(response)
 	if err != nil {
 		r.InternalServerErrorHandler(w, 500, err)
-		return
 	}
 
 	w.WriteHeader(http.StatusUnauthorized)
@@ -125,7 +121,6 @@ func (r Response) SuccessMessageResponse(w http.ResponseWriter, message string) 
 	responseData, err := json.Marshal(response)
 	if err != nil {
 		r.InternalServerErrorHandler(w, 500, err)
-		return
 	}
 
 	w.WriteHeader(http.StatusAccepted)
@@ -148,7 +143,6 @@ func (r Response) MutationSuccessResponse(w http.ResponseWriter, message string)
 	responseData, err := json.Marshal(response)
 	if err != nil {
 		r.InternalServerErrorHandler(w, 500, err)
-		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
@@ -171,7 +165,6 @@ func (r Response) GetSuccessResponse(w http.ResponseWriter, message *string, dat
 	responseData, err := json.Marshal(response)
 	if err != nil {
 		r.InternalServerErrorHandler(w, 500, err)
-		return
 	}
 
 	w.WriteHeader(http.StatusOK)
