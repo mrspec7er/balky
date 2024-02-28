@@ -1,9 +1,15 @@
 package master
 
-import "github.com/mrspec7er/balky/app/model"
+import (
+	"context"
+
+	"github.com/mrspec7er/balky/app/model"
+	"github.com/mrspec7er/balky/app/utils"
+)
 
 type MasterReportService struct {
-	master model.MasterReport
+	master  model.MasterReport
+	publish utils.Publisher
 }
 
 func (s MasterReportService) Create(req *model.MasterReport) (int, error) {
@@ -28,6 +34,21 @@ func (s MasterReportService) FindMany() ([]model.MasterReport, int, error) {
 func (s MasterReportService) Delete(req *model.MasterReport) (int, error) {
 	s.master = *req
 	err := s.master.Delete()
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s MasterReportService) Publish(data []byte, queueName string, userId string) (int, error) {
+	ctx := context.Background()
+
+	payload := utils.Payload{
+		Body:   data,
+		UserID: userId,
+	}
+	err := s.publish.SendMessage(ctx, queueName, &payload)
 	if err != nil {
 		return 500, err
 	}

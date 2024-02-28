@@ -7,9 +7,14 @@ import (
 	"github.com/rabbitmq/amqp091-go"
 )
 
+type Payload struct {
+	Body   []byte
+	UserID string
+}
+
 type Publisher struct{}
 
-func (p Publisher) SendMessage(ctx context.Context, queueName string, data []byte) error {
+func (Publisher) SendMessage(ctx context.Context, queueName string, p *Payload) error {
 	con, err := amqp091.Dial(os.Getenv("MESSAGE_BROKER_URI"))
 	if err != nil {
 		return err
@@ -24,7 +29,10 @@ func (p Publisher) SendMessage(ctx context.Context, queueName string, data []byt
 
 	payload := amqp091.Publishing{
 		ContentType: "application/json",
-		Body:        data,
+		Body:        p.Body,
+		Headers: amqp091.Table{
+			"userId": p.UserID,
+		},
 	}
 
 	err = ch.PublishWithContext(ctx, os.Getenv("EXCHANGE_NAME"), queueName, false, false, payload)

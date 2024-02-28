@@ -1,7 +1,6 @@
 package master
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -13,7 +12,6 @@ import (
 type MasterReportController struct {
 	service  MasterReportService
 	response utils.Response
-	publish  utils.Publisher
 }
 
 func (c *MasterReportController) FindAll(w http.ResponseWriter, r *http.Request) {
@@ -39,11 +37,8 @@ func (c *MasterReportController) Create(w http.ResponseWriter, r *http.Request) 
 		c.response.InternalServerErrorHandler(w, 500, err)
 	}
 
-	ctx := context.Background()
-	err = c.publish.SendMessage(ctx, "master.create", data)
-	if err != nil {
-		c.response.InternalServerErrorHandler(w, 500, err)
-	}
+	userId := "dummy"
+	c.service.Publish(data, "master.create", userId)
 
 	c.response.SuccessMessageResponse(w, "Create master with name: "+master.Name)
 }
@@ -61,11 +56,8 @@ func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) 
 		c.response.InternalServerErrorHandler(w, 500, err)
 	}
 
-	ctx := context.Background()
-	err = c.publish.SendMessage(ctx, "master.delete", data)
-	if err != nil {
-		c.response.InternalServerErrorHandler(w, 500, err)
-	}
+	userId := "dummy"
+	c.service.Publish(data, "master.delete", userId)
 
 	masterID := strconv.Itoa(int(master.ID))
 	c.response.SuccessMessageResponse(w, "Delete master with id: "+masterID)

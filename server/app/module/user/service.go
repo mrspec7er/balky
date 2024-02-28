@@ -1,11 +1,15 @@
 package user
 
 import (
+	"context"
+
 	"github.com/mrspec7er/balky/app/model"
+	"github.com/mrspec7er/balky/app/utils"
 )
 
 type UserService struct {
-	user model.User
+	user    model.User
+	publish utils.Publisher
 }
 
 func (s UserService) Create(req *model.User) (int, error) {
@@ -30,6 +34,21 @@ func (s UserService) FindMany() ([]model.User, int, error) {
 func (s UserService) Delete(req *model.User) (int, error) {
 	s.user = *req
 	err := s.user.Delete()
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s UserService) Publish(data []byte, queueName string, userId string) (int, error) {
+	ctx := context.Background()
+
+	payload := utils.Payload{
+		Body:   data,
+		UserID: userId,
+	}
+	err := s.publish.SendMessage(ctx, queueName, &payload)
 	if err != nil {
 		return 500, err
 	}
