@@ -3,15 +3,16 @@ package user
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"sync"
 
 	"github.com/mrspec7er/balky/app/model"
+	"github.com/mrspec7er/balky/app/module/logger"
 	"github.com/rabbitmq/amqp091-go"
 )
 
 type UserListener struct {
 	service UserService
+	logger  logger.LoggerService
 }
 
 func (l *UserListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
@@ -21,7 +22,7 @@ func (l *UserListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup, queueN
 	messages, err := queue.ConsumeWithContext(ctx, queueName, consumerTag, true, false, false, false, nil)
 
 	if err != nil {
-		fmt.Println(err)
+		l.logger.Publish("Server", 500, err.Error())
 	}
 
 	for data := range messages {
@@ -29,12 +30,12 @@ func (l *UserListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup, queueN
 
 		err := json.Unmarshal(data.Body, &user)
 		if err != nil {
-			fmt.Println(err)
+			l.logger.Publish("Unauthorize", 400, err.Error())
 		}
 
 		status, err := l.service.Create(user)
 		if err != nil {
-			fmt.Println(status, err)
+			l.logger.Publish(user.Email, status, err.Error())
 		}
 	}
 }
@@ -46,7 +47,7 @@ func (l *UserListener) DeleteListener(queue *amqp091.Channel, wg *sync.WaitGroup
 	messages, err := queue.ConsumeWithContext(ctx, queueName, consumerTag, true, false, false, false, nil)
 
 	if err != nil {
-		fmt.Println(err)
+		l.logger.Publish("Server", 500, err.Error())
 	}
 
 	for data := range messages {
@@ -54,12 +55,13 @@ func (l *UserListener) DeleteListener(queue *amqp091.Channel, wg *sync.WaitGroup
 
 		err := json.Unmarshal(data.Body, &user)
 		if err != nil {
-			fmt.Println(err)
+			l.logger.Publish(user.Email, 400, err.Error())
 		}
 
 		status, err := l.service.Delete(user)
-		if err != nil {
-			fmt.Println(status, err)
+		userId, ok := data.Headers["userId"].(string)
+		if err != nil || !ok {
+			l.logger.Publish(userId, status, "Missing user credentials")
 		}
 	}
 }

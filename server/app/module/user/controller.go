@@ -29,7 +29,6 @@ func (c *UserController) Create(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		c.response.BadRequestHandler(w)
-		return
 	}
 
 	data, err := json.Marshal(user)
@@ -37,7 +36,10 @@ func (c *UserController) Create(w http.ResponseWriter, r *http.Request) {
 		c.response.InternalServerErrorHandler(w, 500, err)
 	}
 
-	c.service.Publish(data, "user.create", "")
+	status, err := c.service.Publish(data, "user.create", "")
+	if err != nil {
+		c.response.InternalServerErrorHandler(w, status, err)
+	}
 
 	c.response.SuccessMessageResponse(w, "Create user with email: "+user.Email)
 }
@@ -47,7 +49,6 @@ func (c *UserController) Delete(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		c.response.BadRequestHandler(w)
-		return
 	}
 
 	data, err := json.Marshal(user)
