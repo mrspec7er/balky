@@ -48,5 +48,6 @@ func Migration(db *gorm.DB) {
 		&model.MasterReport{},
 		&model.Attribute{},
 		&model.Content{},
+		&model.Logger{},
 	)
 }

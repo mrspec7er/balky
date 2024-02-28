@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/mrspec7er/balky/app/module/application"
+	"github.com/mrspec7er/balky/app/module/logger"
 	"github.com/mrspec7er/balky/app/module/master"
 	"github.com/mrspec7er/balky/app/module/user"
 	"github.com/rabbitmq/amqp091-go"
@@ -42,4 +43,5 @@ func listenersConfig(ch *amqp091.Channel, wg *sync.WaitGroup) {
 	user.HandlerConfig(ch, wg)
 	application.HandlerConfig(ch, wg)
 	master.HandlerConfig(ch, wg)
+	logger.HandlerConfig(ch, wg)
 }
