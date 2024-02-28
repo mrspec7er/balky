@@ -1,6 +1,6 @@
 FROM rabbitmq:3-management
 
-WORKDIR /message-hub
+WORKDIR /hub
 
 ENV HOSTNAME my-rabbit
 
