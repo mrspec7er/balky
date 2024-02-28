@@ -3,15 +3,16 @@ package master
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"sync"
 
 	"github.com/mrspec7er/balky/app/model"
+	"github.com/mrspec7er/balky/app/module/logger"
 	"github.com/rabbitmq/amqp091-go"
 )
 
 type MasterReportListener struct {
 	service MasterReportService
+	logger  logger.LoggerService
 }
 
 func (l *MasterReportListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
@@ -21,20 +22,25 @@ func (l *MasterReportListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup
 	messages, err := queue.ConsumeWithContext(ctx, queueName, consumerTag, true, false, false, false, nil)
 
 	if err != nil {
-		fmt.Println(err)
+		l.logger.Publish("Server", 500, err.Error())
 	}
 
 	for data := range messages {
 		master := &model.MasterReport{}
 
+		userId, ok := data.Headers["userId"].(string)
+		if !ok {
+			l.logger.Publish(userId, 400, "Missing user credentials")
+		}
+
 		err := json.Unmarshal(data.Body, &master)
 		if err != nil {
-			fmt.Println(err)
+			l.logger.Publish(userId, 400, err.Error())
 		}
 
 		status, err := l.service.Create(master)
 		if err != nil {
-			fmt.Println(status, err)
+			l.logger.Publish(userId, status, err.Error())
 		}
 	}
 }
@@ -46,20 +52,25 @@ func (l *MasterReportListener) DeleteListener(queue *amqp091.Channel, wg *sync.W
 	messages, err := queue.ConsumeWithContext(ctx, queueName, consumerTag, true, false, false, false, nil)
 
 	if err != nil {
-		fmt.Println(err)
+		l.logger.Publish("Server", 500, err.Error())
 	}
 
 	for data := range messages {
 		master := &model.MasterReport{}
 
+		userId, ok := data.Headers["userId"].(string)
+		if !ok {
+			l.logger.Publish(userId, 400, "Missing user credentials")
+		}
+
 		err := json.Unmarshal(data.Body, &master)
 		if err != nil {
-			fmt.Println(err)
+			l.logger.Publish(userId, 400, err.Error())
 		}
 
 		status, err := l.service.Delete(master)
 		if err != nil {
-			fmt.Println(status, err)
+			l.logger.Publish(userId, status, err.Error())
 		}
 	}
 }

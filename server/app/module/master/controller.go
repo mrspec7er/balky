@@ -29,7 +29,6 @@ func (c *MasterReportController) Create(w http.ResponseWriter, r *http.Request) 
 
 	if err := json.NewDecoder(r.Body).Decode(&master); err != nil {
 		c.response.BadRequestHandler(w)
-		return
 	}
 
 	data, err := json.Marshal(master)
@@ -48,7 +47,6 @@ func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) 
 
 	if err := json.NewDecoder(r.Body).Decode(&master); err != nil {
 		c.response.BadRequestHandler(w)
-		return
 	}
 
 	data, err := json.Marshal(master)
