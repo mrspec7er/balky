@@ -31,16 +31,19 @@ func (l *MasterReportListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup
 		userId, ok := data.Headers["userId"].(string)
 		if !ok {
 			l.logger.Publish(userId, 400, "Missing user credentials")
+			continue
 		}
 
 		err := json.Unmarshal(data.Body, &master)
 		if err != nil {
 			l.logger.Publish(userId, 400, err.Error())
+			continue
 		}
 
 		status, err := l.service.Create(master)
 		if err != nil {
 			l.logger.Publish(userId, status, err.Error())
+			continue
 		}
 	}
 }
@@ -61,16 +64,19 @@ func (l *MasterReportListener) DeleteListener(queue *amqp091.Channel, wg *sync.W
 		userId, ok := data.Headers["userId"].(string)
 		if !ok {
 			l.logger.Publish(userId, 400, "Missing user credentials")
+			continue
 		}
 
 		err := json.Unmarshal(data.Body, &master)
 		if err != nil {
 			l.logger.Publish(userId, 400, err.Error())
+			continue
 		}
 
 		status, err := l.service.Delete(master)
 		if err != nil {
 			l.logger.Publish(userId, status, err.Error())
+			continue
 		}
 	}
 }
