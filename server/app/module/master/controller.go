@@ -19,6 +19,7 @@ func (c *MasterReportController) FindAll(w http.ResponseWriter, r *http.Request)
 
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, status, err)
+		return
 	}
 
 	c.response.GetSuccessResponse(w, nil, result, nil)
@@ -29,11 +30,13 @@ func (c *MasterReportController) Create(w http.ResponseWriter, r *http.Request) 
 
 	if err := json.NewDecoder(r.Body).Decode(&master); err != nil {
 		c.response.BadRequestHandler(w)
+		return
 	}
 
 	data, err := json.Marshal(master)
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, 500, err)
+		return
 	}
 
 	userId := "dummy"
@@ -47,11 +50,13 @@ func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) 
 
 	if err := json.NewDecoder(r.Body).Decode(&master); err != nil {
 		c.response.BadRequestHandler(w)
+		return
 	}
 
 	data, err := json.Marshal(master)
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, 500, err)
+		return
 	}
 
 	userId := "dummy"

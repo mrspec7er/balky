@@ -19,6 +19,7 @@ func (c *UserController) FindAll(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, status, err)
+		return
 	}
 
 	c.response.GetSuccessResponse(w, nil, result, nil)
@@ -29,16 +30,19 @@ func (c *UserController) Create(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		c.response.BadRequestHandler(w)
+		return
 	}
 
 	data, err := json.Marshal(user)
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, 500, err)
+		return
 	}
 
 	status, err := c.service.Publish(data, "user.create", "")
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, status, err)
+		return
 	}
 
 	c.response.SuccessMessageResponse(w, "Create user with email: "+user.Email)
@@ -49,11 +53,13 @@ func (c *UserController) Delete(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		c.response.BadRequestHandler(w)
+		return
 	}
 
 	data, err := json.Marshal(user)
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, 500, err)
+		return
 	}
 
 	userId := "dummy"
