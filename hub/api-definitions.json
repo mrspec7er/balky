@@ -60,6 +60,15 @@
       }
     },
     {
+      "name": "logger",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
       "name": "app.create",
       "vhost": "/",
       "durable": true,
@@ -97,6 +106,15 @@
     }
   ],
   "exchanges": [
+    {
+      "name": "balky.error",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
     {
       "name": "balky",
       "vhost": "/",
@@ -146,6 +164,14 @@
       "destination": "user.delete",
       "destination_type": "queue",
       "routing_key": "user.delete",
+      "arguments": {}
+    },
+    {
+      "source": "balky.error",
+      "vhost": "/",
+      "destination": "logger",
+      "destination_type": "queue",
+      "routing_key": "logger",
       "arguments": {}
     }
   ]
