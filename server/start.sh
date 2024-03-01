@@ -2,7 +2,7 @@
 
 go run script/create_db/main.go
 
-sleep 5
+sleep 2
 
 fresh
 

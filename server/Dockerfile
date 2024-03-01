@@ -1,6 +1,6 @@
 FROM golang:1.21.6-bookworm
 
-WORKDIR /api
+WORKDIR /server
 
 COPY go.mod go.sum ./
 
@@ -11,6 +11,8 @@ COPY . .
 RUN go install github.com/zzwx/fresh@latest
 
 RUN chmod +x ./start.sh
+
+RUN chmod +x ./test.sh
 
 EXPOSE 8080
 
