@@ -8,8 +8,9 @@ import (
 )
 
 type MasterReportService struct {
-	master  model.MasterReport
-	publish utils.Publisher
+	master    model.MasterReport
+	publish   utils.Publisher
+	attribute model.Attribute
 }
 
 func (s MasterReportService) Create(req *model.MasterReport) (int, error) {
@@ -49,6 +50,35 @@ func (s MasterReportService) Publish(data []byte, queueName string, userId strin
 		UserID: userId,
 	}
 	err := s.publish.SendMessage(ctx, queueName, &payload)
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s MasterReportService) CreateAttribute(req *model.Attribute) (int, error) {
+	s.attribute = *req
+	err := s.attribute.Create()
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s MasterReportService) FindManyAttribute() ([]model.Attribute, int, error) {
+	attributes, err := s.attribute.FindMany()
+	if err != nil {
+		return nil, 500, err
+	}
+
+	return attributes, 201, nil
+}
+
+func (s MasterReportService) DeleteAttribute(req *model.Attribute) (int, error) {
+	s.attribute = *req
+	err := s.attribute.Delete()
 	if err != nil {
 		return 500, err
 	}

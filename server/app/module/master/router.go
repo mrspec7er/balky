@@ -15,7 +15,13 @@ func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup) {
 	go l.Create(q, wg, "master.create", "master.create."+os.Getenv("SERVER_ID"))
 
 	wg.Add(1)
-	go l.DeleteListener(q, wg, "master.delete", "master.delete."+os.Getenv("SERVER_ID"))
+	go l.Delete(q, wg, "master.delete", "master.delete."+os.Getenv("SERVER_ID"))
+
+	wg.Add(1)
+	go l.CreateAttribute(q, wg, "attribute.create", "attribute.create."+os.Getenv("SERVER_ID"))
+
+	wg.Add(1)
+	go l.DeleteAttribute(q, wg, "attribute.delete", "attribute.delete."+os.Getenv("SERVER_ID"))
 }
 
 func RouteConfig(router chi.Router) {
@@ -24,4 +30,8 @@ func RouteConfig(router chi.Router) {
 	router.Get("/", controller.FindAll)
 	router.Post("/", controller.Create)
 	router.Delete("/", controller.Delete)
+
+	router.Get("/attributes", controller.FindAllAttribute)
+	router.Post("/attributes", controller.CreateAttribute)
+	router.Delete("/attributes", controller.DeleteAttribute)
 }

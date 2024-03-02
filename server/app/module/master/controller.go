@@ -62,6 +62,58 @@ func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) 
 	userId := "dummy"
 	c.service.Publish(data, "master.delete", userId)
 
-	masterID := strconv.Itoa(int(master.ID))
-	c.response.SuccessMessageResponse(w, "Delete master with id: "+masterID)
+	masterId := strconv.Itoa(int(master.ID))
+	c.response.SuccessMessageResponse(w, "Delete master with id: "+masterId)
+}
+
+func (c *MasterReportController) FindAllAttribute(w http.ResponseWriter, r *http.Request) {
+	result, status, err := c.service.FindManyAttribute()
+
+	if err != nil {
+		c.response.InternalServerErrorHandler(w, status, err)
+		return
+	}
+
+	c.response.GetSuccessResponse(w, nil, result, nil)
+}
+
+func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.Request) {
+	attribute := &model.Attribute{}
+
+	if err := json.NewDecoder(r.Body).Decode(&attribute); err != nil {
+		c.response.BadRequestHandler(w)
+		return
+	}
+
+	data, err := json.Marshal(attribute)
+	if err != nil {
+		c.response.InternalServerErrorHandler(w, 500, err)
+		return
+	}
+
+	userId := "dummy"
+	c.service.Publish(data, "attribute.create", userId)
+
+	c.response.SuccessMessageResponse(w, "Create attribute with label: "+attribute.Label)
+}
+
+func (c *MasterReportController) DeleteAttribute(w http.ResponseWriter, r *http.Request) {
+	attribute := &model.Attribute{}
+
+	if err := json.NewDecoder(r.Body).Decode(&attribute); err != nil {
+		c.response.BadRequestHandler(w)
+		return
+	}
+
+	data, err := json.Marshal(attribute)
+	if err != nil {
+		c.response.InternalServerErrorHandler(w, 500, err)
+		return
+	}
+
+	userId := "dummy"
+	c.service.Publish(data, "attribute.delete", userId)
+
+	attributeId := strconv.Itoa(int(attribute.ID))
+	c.response.SuccessMessageResponse(w, "Delete attribute with id: "+attributeId)
 }
