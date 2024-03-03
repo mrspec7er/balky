@@ -49,7 +49,7 @@ func (c *AuthController) Callback(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, err)
 		return
 	}
-	session, _ := Store.Get(r, "session-name")
+	session, _ := Store.Get(r, "auth")
 	session.Values["email"] = user.Email
 	session.Save(r, w)
 
@@ -58,6 +58,9 @@ func (c *AuthController) Callback(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
+	session, _ := Store.Get(r, "auth")
+	session.Values["email"] = nil
+	session.Save(r, w)
 	gothic.Logout(w, r)
 	w.Header().Set("Location", "/api/auth/index")
 	w.WriteHeader(http.StatusTemporaryRedirect)
