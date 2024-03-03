@@ -23,6 +23,7 @@ func New() *App {
 
 func (a *App) Start(ctx context.Context) error {
 	utils.DBConnection()
+	utils.AuthConfig()
 
 	Migration(utils.DB)
 
