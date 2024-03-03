@@ -62,9 +62,9 @@ func (l *UserListener) DeleteListener(queue *amqp091.Channel, wg *sync.WaitGroup
 		}
 
 		status, err := l.service.Delete(user)
-		userId, ok := data.Headers["userId"].(string)
+		userEmail, ok := data.Headers["userEmail"].(string)
 		if err != nil || !ok {
-			l.logger.Publish(userId, status, "Missing user credentials")
+			l.logger.Publish(userEmail, status, "Missing user credentials")
 			continue
 		}
 	}

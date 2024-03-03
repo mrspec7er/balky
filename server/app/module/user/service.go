@@ -41,12 +41,12 @@ func (s UserService) Delete(req *model.User) (int, error) {
 	return 201, nil
 }
 
-func (s UserService) Publish(data []byte, queueName string, userId string) (int, error) {
+func (s UserService) Publish(data []byte, queueName string, userEmail string) (int, error) {
 	ctx := context.Background()
 
 	payload := utils.Payload{
-		Body:   data,
-		UserID: userId,
+		Body:      data,
+		UserEmail: userEmail,
 	}
 	err := s.publish.SendMessage(ctx, queueName, &payload)
 	if err != nil {

@@ -28,21 +28,21 @@ func (l *MasterReportListener) Create(queue *amqp091.Channel, wg *sync.WaitGroup
 	for data := range messages {
 		master := &model.MasterReport{}
 
-		userId, ok := data.Headers["userId"].(string)
+		userEmail, ok := data.Headers["userEmail"].(string)
 		if !ok {
-			l.logger.Publish(userId, 400, "Missing user credentials")
+			l.logger.Publish(userEmail, 400, "Missing user credentials")
 			continue
 		}
 
 		err := json.Unmarshal(data.Body, &master)
 		if err != nil {
-			l.logger.Publish(userId, 400, err.Error())
+			l.logger.Publish(userEmail, 400, err.Error())
 			continue
 		}
 
 		status, err := l.service.Create(master)
 		if err != nil {
-			l.logger.Publish(userId, status, err.Error())
+			l.logger.Publish(userEmail, status, err.Error())
 			continue
 		}
 	}
@@ -61,21 +61,21 @@ func (l *MasterReportListener) Delete(queue *amqp091.Channel, wg *sync.WaitGroup
 	for data := range messages {
 		master := &model.MasterReport{}
 
-		userId, ok := data.Headers["userId"].(string)
+		userEmail, ok := data.Headers["userEmail"].(string)
 		if !ok {
-			l.logger.Publish(userId, 400, "Missing user credentials")
+			l.logger.Publish(userEmail, 400, "Missing user credentials")
 			continue
 		}
 
 		err := json.Unmarshal(data.Body, &master)
 		if err != nil {
-			l.logger.Publish(userId, 400, err.Error())
+			l.logger.Publish(userEmail, 400, err.Error())
 			continue
 		}
 
 		status, err := l.service.Delete(master)
 		if err != nil {
-			l.logger.Publish(userId, status, err.Error())
+			l.logger.Publish(userEmail, status, err.Error())
 			continue
 		}
 	}
@@ -94,21 +94,21 @@ func (l *MasterReportListener) CreateAttribute(queue *amqp091.Channel, wg *sync.
 	for data := range messages {
 		attribute := &model.Attribute{}
 
-		userId, ok := data.Headers["userId"].(string)
+		userEmail, ok := data.Headers["userEmail"].(string)
 		if !ok {
-			l.logger.Publish(userId, 400, "Missing user credentials")
+			l.logger.Publish(userEmail, 400, "Missing user credentials")
 			continue
 		}
 
 		err := json.Unmarshal(data.Body, &attribute)
 		if err != nil {
-			l.logger.Publish(userId, 400, err.Error())
+			l.logger.Publish(userEmail, 400, err.Error())
 			continue
 		}
 
 		status, err := l.service.CreateAttribute(attribute)
 		if err != nil {
-			l.logger.Publish(userId, status, err.Error())
+			l.logger.Publish(userEmail, status, err.Error())
 			continue
 		}
 	}
@@ -127,21 +127,21 @@ func (l *MasterReportListener) DeleteAttribute(queue *amqp091.Channel, wg *sync.
 	for data := range messages {
 		attribute := &model.Attribute{}
 
-		userId, ok := data.Headers["userId"].(string)
+		userEmail, ok := data.Headers["userEmail"].(string)
 		if !ok {
-			l.logger.Publish(userId, 400, "Missing user credentials")
+			l.logger.Publish(userEmail, 400, "Missing user credentials")
 			continue
 		}
 
 		err := json.Unmarshal(data.Body, &attribute)
 		if err != nil {
-			l.logger.Publish(userId, 400, err.Error())
+			l.logger.Publish(userEmail, 400, err.Error())
 			continue
 		}
 
 		status, err := l.service.DeleteAttribute(attribute)
 		if err != nil {
-			l.logger.Publish(userId, status, err.Error())
+			l.logger.Publish(userEmail, status, err.Error())
 			continue
 		}
 	}

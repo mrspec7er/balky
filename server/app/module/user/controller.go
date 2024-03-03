@@ -62,8 +62,8 @@ func (c *UserController) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userId := "dummy"
-	c.service.Publish(data, "user.delete", userId)
+	userEmail := "dummy"
+	c.service.Publish(data, "user.delete", userEmail)
 
 	userID := strconv.Itoa(int(user.ID))
 	c.response.SuccessMessageResponse(w, "Delete user with id: "+userID)

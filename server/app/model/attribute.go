@@ -9,7 +9,7 @@ import (
 
 type Attribute struct {
 	ID         uint           `json:"id" gorm:"primaryKey"`
-	Label      string         `json:"name" gorm:"type:varchar(64)"`
+	Label      string         `json:"label" gorm:"type:varchar(64)"`
 	Type       string         `json:"type" gorm:"type:varchar(32)"`
 	IsRequired bool           `json:"isRequired"`
 	CreatedAt  time.Time      `json:"createdAt"`

@@ -8,8 +8,8 @@ import (
 )
 
 type Payload struct {
-	Body   []byte
-	UserID string
+	Body      []byte
+	UserEmail string
 }
 
 type Publisher struct{}
@@ -31,7 +31,7 @@ func (Publisher) SendMessage(ctx context.Context, queueName string, p *Payload) 
 		ContentType: "application/json",
 		Body:        p.Body,
 		Headers: amqp091.Table{
-			"userId": p.UserID,
+			"userEmail": p.UserEmail,
 		},
 	}
 

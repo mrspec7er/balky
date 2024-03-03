@@ -6,15 +6,18 @@ import (
 	"strconv"
 
 	"github.com/mrspec7er/balky/app/model"
+	"github.com/mrspec7er/balky/app/module/auth"
 	"github.com/mrspec7er/balky/app/utils"
 )
 
 type MasterReportController struct {
 	service  MasterReportService
 	response utils.Response
+	auth     auth.AuthService
 }
 
 func (c *MasterReportController) FindAll(w http.ResponseWriter, r *http.Request) {
+
 	result, status, err := c.service.FindMany()
 
 	if err != nil {
@@ -39,8 +42,8 @@ func (c *MasterReportController) Create(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	userId := "dummy"
-	c.service.Publish(data, "master.create", userId)
+	userEmail := "dummy"
+	c.service.Publish(data, "master.create", userEmail)
 
 	c.response.SuccessMessageResponse(w, "Create master with name: "+master.Name)
 }
@@ -59,8 +62,8 @@ func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	userId := "dummy"
-	c.service.Publish(data, "master.delete", userId)
+	userEmail := "dummy"
+	c.service.Publish(data, "master.delete", userEmail)
 
 	masterId := strconv.Itoa(int(master.ID))
 	c.response.SuccessMessageResponse(w, "Delete master with id: "+masterId)
@@ -78,6 +81,11 @@ func (c *MasterReportController) FindAllAttribute(w http.ResponseWriter, r *http
 }
 
 func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.Request) {
+	userEmail, err := c.auth.GetUserEmail(r)
+	if err != nil {
+		c.response.UnauthorizeUser(w)
+		return
+	}
 	attribute := &model.Attribute{}
 
 	if err := json.NewDecoder(r.Body).Decode(&attribute); err != nil {
@@ -90,9 +98,7 @@ func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.
 		c.response.InternalServerErrorHandler(w, 500, err)
 		return
 	}
-
-	userId := "dummy"
-	c.service.Publish(data, "attribute.create", userId)
+	c.service.Publish(data, "attribute.create", userEmail)
 
 	c.response.SuccessMessageResponse(w, "Create attribute with label: "+attribute.Label)
 }
@@ -111,8 +117,8 @@ func (c *MasterReportController) DeleteAttribute(w http.ResponseWriter, r *http.
 		return
 	}
 
-	userId := "dummy"
-	c.service.Publish(data, "attribute.delete", userId)
+	userEmail := "dummy"
+	c.service.Publish(data, "attribute.delete", userEmail)
 
 	attributeId := strconv.Itoa(int(attribute.ID))
 	c.response.SuccessMessageResponse(w, "Delete attribute with id: "+attributeId)

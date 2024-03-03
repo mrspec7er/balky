@@ -42,14 +42,14 @@ func (s LoggerService) Delete(req *model.Logger) (int, error) {
 	return 201, nil
 }
 
-func (s LoggerService) Publish(userId string, status int, message string) {
+func (s LoggerService) Publish(userEmail string, status int, message string) {
 	ctx := context.Background()
 
-	s.logger.Author = userId
+	s.logger.Author = userEmail
 	s.logger.Message = message
 
 	data := model.Logger{
-		Author:  userId,
+		Author:  userEmail,
 		Status:  status,
 		Message: message,
 	}

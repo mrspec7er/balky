@@ -11,7 +11,7 @@ import (
 )
 
 type HeaderPayload struct {
-	UserID string `json:"userId"`
+	UserEmail string `json:"userEmail"`
 }
 
 type LoggerListener struct {
