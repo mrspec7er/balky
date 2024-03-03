@@ -23,7 +23,6 @@ func (c *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *AuthController) Callback(w http.ResponseWriter, r *http.Request) {
-
 	user, err := c.service.SaveUserSessions(w, r)
 	if err != nil {
 		c.response.UnauthorizeUser(w)

@@ -42,7 +42,11 @@ func (c *MasterReportController) Create(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	userEmail := "dummy"
+	userEmail, err := c.auth.GetUserEmail(r)
+	if err != nil {
+		c.response.UnauthorizeUser(w)
+		return
+	}
 	c.service.Publish(data, "master.create", userEmail)
 
 	c.response.SuccessMessageResponse(w, "Create master with name: "+master.Name)
@@ -62,7 +66,12 @@ func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	userEmail := "dummy"
+	userEmail, err := c.auth.GetUserEmail(r)
+	if err != nil {
+		c.response.UnauthorizeUser(w)
+		return
+	}
+
 	c.service.Publish(data, "master.delete", userEmail)
 
 	masterId := strconv.Itoa(int(master.ID))
@@ -81,11 +90,6 @@ func (c *MasterReportController) FindAllAttribute(w http.ResponseWriter, r *http
 }
 
 func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.Request) {
-	userEmail, err := c.auth.GetUserEmail(r)
-	if err != nil {
-		c.response.UnauthorizeUser(w)
-		return
-	}
 	attribute := &model.Attribute{}
 
 	if err := json.NewDecoder(r.Body).Decode(&attribute); err != nil {
@@ -98,6 +102,13 @@ func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.
 		c.response.InternalServerErrorHandler(w, 500, err)
 		return
 	}
+
+	userEmail, err := c.auth.GetUserEmail(r)
+	if err != nil {
+		c.response.UnauthorizeUser(w)
+		return
+	}
+
 	c.service.Publish(data, "attribute.create", userEmail)
 
 	c.response.SuccessMessageResponse(w, "Create attribute with label: "+attribute.Label)
@@ -117,7 +128,12 @@ func (c *MasterReportController) DeleteAttribute(w http.ResponseWriter, r *http.
 		return
 	}
 
-	userEmail := "dummy"
+	userEmail, err := c.auth.GetUserEmail(r)
+	if err != nil {
+		c.response.UnauthorizeUser(w)
+		return
+	}
+
 	c.service.Publish(data, "attribute.delete", userEmail)
 
 	attributeId := strconv.Itoa(int(attribute.ID))
