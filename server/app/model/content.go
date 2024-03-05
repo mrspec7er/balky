@@ -19,14 +19,14 @@ func (a *Content) store() *gorm.DB {
 	return utility.DB
 }
 
-func (a *Content) Create() error {
-	err := a.store().Create(&a).Error
+func (a *Content) Create(contents []*Content) error {
+	err := a.store().Create(&contents).Error
 	return err
 }
 
-func (a *Content) FindMany() ([]*Content, error) {
+func (a *Content) FindMany(appId string) ([]*Content, error) {
 	contents := []*Content{}
-	err := a.store().Find(&contents).Error
+	err := a.store().Where("application_number = ?", appId).Find(&contents).Error
 	return contents, err
 }
 
