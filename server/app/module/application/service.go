@@ -10,6 +10,7 @@ import (
 type ApplicationService struct {
 	app     model.Application
 	publish utility.Publisher
+	content model.Content
 }
 
 func (s *ApplicationService) Create(req *model.Application) (int, error) {
@@ -59,6 +60,35 @@ func (s *ApplicationService) Publish(data []byte, queueName string, userEmail st
 		UserEmail: userEmail,
 	}
 	err := s.publish.SendMessage(ctx, queueName, &payload)
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s *ApplicationService) CreateContent(req []*model.Content) (int, error) {
+
+	err := s.content.Create(req)
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s *ApplicationService) FindManyContent(appId string) ([]*model.Content, int, error) {
+	contents, err := s.content.FindMany(appId)
+	if err != nil {
+		return nil, 500, err
+	}
+
+	return contents, 201, nil
+}
+
+func (s *ApplicationService) DeleteContent(req *model.Content) (int, error) {
+	s.content = *req
+	err := s.content.Delete()
 	if err != nil {
 		return 500, err
 	}
