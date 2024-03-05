@@ -6,12 +6,12 @@ import (
 	"strconv"
 
 	"github.com/mrspec7er/balky/app/model"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type UserController struct {
 	service  UserService
-	response utils.Response
+	response utility.Response
 }
 
 func (c *UserController) FindAll(w http.ResponseWriter, r *http.Request) {

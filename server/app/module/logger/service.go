@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 
 	"github.com/mrspec7er/balky/app/model"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type LoggerService struct {
 	logger  model.Logger
-	publish utils.Publisher
+	publish utility.Publisher
 }
 
 func (s LoggerService) Create(req *model.Logger) error {

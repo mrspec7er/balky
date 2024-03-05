@@ -3,12 +3,12 @@ package logger
 import (
 	"net/http"
 
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type LoggerController struct {
 	service  LoggerService
-	response utils.Response
+	response utility.Response
 }
 
 func (c *LoggerController) FindAll(w http.ResponseWriter, r *http.Request) {

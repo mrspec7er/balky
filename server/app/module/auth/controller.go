@@ -5,12 +5,12 @@ import (
 	"net/http"
 
 	"github.com/markbates/goth/gothic"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type AuthController struct {
 	service  AuthService
-	response utils.Response
+	response utility.Response
 }
 
 func (c *AuthController) Index(w http.ResponseWriter, r *http.Request) {

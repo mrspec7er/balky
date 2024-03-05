@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"github.com/mrspec7er/balky/app/model"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type UserService struct {
 	user    model.User
-	publish utils.Publisher
+	publish utility.Publisher
 }
 
 func (s UserService) Create(req *model.User) (int, error) {
@@ -54,7 +54,7 @@ func (s UserService) Delete(req *model.User) (int, error) {
 func (s UserService) Publish(data []byte, queueName string, userEmail string) (int, error) {
 	ctx := context.Background()
 
-	payload := utils.Payload{
+	payload := utility.Payload{
 		Body:      data,
 		UserEmail: userEmail,
 	}

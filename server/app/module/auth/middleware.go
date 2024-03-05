@@ -6,12 +6,12 @@ import (
 	"slices"
 
 	"github.com/mrspec7er/balky/app/module/user"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type AuthMiddleware struct {
 	service  AuthService
-	response utils.Response
+	response utility.Response
 	user     user.UserService
 }
 
@@ -36,7 +36,7 @@ func (m AuthMiddleware) Authorize(roles ...string) func(http.Handler) http.Handl
 				return
 			}
 
-			ctx := context.WithValue(r.Context(), utils.UserContextKey, user)
+			ctx := context.WithValue(r.Context(), utility.UserContextKey, user)
 			h.ServeHTTP(w, r.WithContext(ctx))
 		})
 	})

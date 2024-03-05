@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/mrspec7er/balky/app/model"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 	"gorm.io/gorm"
 )
 
@@ -22,10 +22,10 @@ func New() *App {
 }
 
 func (a *App) Start(ctx context.Context) error {
-	utils.DBConnection()
-	utils.AuthConfig()
+	utility.DBConnection()
+	utility.AuthConfig()
 
-	Migration(utils.DB)
+	Migration(utility.DB)
 
 	go a.dataListener()
 

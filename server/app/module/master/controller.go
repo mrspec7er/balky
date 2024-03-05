@@ -6,12 +6,12 @@ import (
 	"strconv"
 
 	"github.com/mrspec7er/balky/app/model"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type MasterReportController struct {
 	service  MasterReportService
-	response utils.Response
+	response utility.Response
 }
 
 func (c *MasterReportController) FindAll(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +40,7 @@ func (c *MasterReportController) Create(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	user, ok := (r.Context().Value(utils.UserContextKey)).(*model.User)
+	user, ok := (r.Context().Value(utility.UserContextKey)).(*model.User)
 	if !ok {
 		c.response.BadRequestHandler(w)
 		return
@@ -65,7 +65,7 @@ func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	user, ok := (r.Context().Value(utils.UserContextKey)).(*model.User)
+	user, ok := (r.Context().Value(utility.UserContextKey)).(*model.User)
 	if !ok {
 		c.response.BadRequestHandler(w)
 		return
@@ -102,7 +102,7 @@ func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.
 		return
 	}
 
-	user, ok := (r.Context().Value(utils.UserContextKey)).(*model.User)
+	user, ok := (r.Context().Value(utility.UserContextKey)).(*model.User)
 	if !ok {
 		c.response.BadRequestHandler(w)
 		return
@@ -127,7 +127,7 @@ func (c *MasterReportController) DeleteAttribute(w http.ResponseWriter, r *http.
 		return
 	}
 
-	user, ok := (r.Context().Value(utils.UserContextKey)).(*model.User)
+	user, ok := (r.Context().Value(utility.UserContextKey)).(*model.User)
 	if !ok {
 		c.response.BadRequestHandler(w)
 		return

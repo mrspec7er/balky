@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"github.com/mrspec7er/balky/app/model"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type MasterReportService struct {
 	master    model.MasterReport
-	publish   utils.Publisher
+	publish   utility.Publisher
 	attribute model.Attribute
 }
 
@@ -45,7 +45,7 @@ func (s MasterReportService) Delete(req *model.MasterReport) (int, error) {
 func (s MasterReportService) Publish(data []byte, queueName string, userEmail string) (int, error) {
 	ctx := context.Background()
 
-	payload := utils.Payload{
+	payload := utility.Payload{
 		Body:      data,
 		UserEmail: userEmail,
 	}

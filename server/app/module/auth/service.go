@@ -6,13 +6,13 @@ import (
 
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type AuthService struct{}
 
 func (a AuthService) GetUserEmail(r *http.Request) (string, error) {
-	session, err := utils.Store.Get(r, "auth")
+	session, err := utility.Store.Get(r, "auth")
 	if err != nil {
 		return "", err
 	}
@@ -31,7 +31,7 @@ func (a AuthService) SaveUserSessions(w http.ResponseWriter, r *http.Request) (*
 		return nil, err
 	}
 
-	session, err := utils.Store.Get(r, "auth")
+	session, err := utility.Store.Get(r, "auth")
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (a AuthService) SaveUserSessions(w http.ResponseWriter, r *http.Request) (*
 }
 
 func (a AuthService) RemoveUserSessions(w http.ResponseWriter, r *http.Request) {
-	session, _ := utils.Store.Get(r, "auth")
+	session, _ := utility.Store.Get(r, "auth")
 	session.Values["email"] = nil
 	session.Save(r, w)
 	gothic.Logout(w, r)

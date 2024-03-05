@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +18,7 @@ type Logger struct {
 }
 
 func (l *Logger) store() *gorm.DB {
-	return utils.DB
+	return utility.DB
 }
 
 func (l *Logger) Create() error {

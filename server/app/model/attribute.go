@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	"github.com/mrspec7er/balky/app/utils"
+	"github.com/mrspec7er/balky/app/utility"
 	"gorm.io/gorm"
 )
 
@@ -23,7 +23,7 @@ type Attribute struct {
 }
 
 func (a *Attribute) store() *gorm.DB {
-	return utils.DB
+	return utility.DB
 }
 
 func (a *Attribute) Create() error {
