@@ -15,12 +15,6 @@ type AuthMiddleware struct {
 	user     user.UserService
 }
 
-type key string
-
-const (
-	UserContextKey key = "user"
-)
-
 func (m AuthMiddleware) Authorize(roles ...string) func(http.Handler) http.Handler {
 	return (func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +36,7 @@ func (m AuthMiddleware) Authorize(roles ...string) func(http.Handler) http.Handl
 				return
 			}
 
-			ctx := context.WithValue(r.Context(), UserContextKey, user)
+			ctx := context.WithValue(r.Context(), utils.UserContextKey, user)
 			h.ServeHTTP(w, r.WithContext(ctx))
 		})
 	})

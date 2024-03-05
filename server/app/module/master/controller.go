@@ -6,14 +6,12 @@ import (
 	"strconv"
 
 	"github.com/mrspec7er/balky/app/model"
-	"github.com/mrspec7er/balky/app/module/auth"
 	"github.com/mrspec7er/balky/app/utils"
 )
 
 type MasterReportController struct {
 	service  MasterReportService
 	response utils.Response
-	auth     auth.AuthService
 }
 
 func (c *MasterReportController) FindAll(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +40,7 @@ func (c *MasterReportController) Create(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	user, ok := (r.Context().Value(auth.UserContextKey)).(*model.User)
+	user, ok := (r.Context().Value(utils.UserContextKey)).(*model.User)
 	if !ok {
 		c.response.BadRequestHandler(w)
 		return
@@ -67,13 +65,13 @@ func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	userEmail, err := c.auth.GetUserEmail(r)
-	if err != nil {
-		c.response.UnauthorizeUser(w)
+	user, ok := (r.Context().Value(utils.UserContextKey)).(*model.User)
+	if !ok {
+		c.response.BadRequestHandler(w)
 		return
 	}
 
-	c.service.Publish(data, "master.delete", userEmail)
+	c.service.Publish(data, "master.delete", user.Email)
 
 	masterId := strconv.Itoa(int(master.ID))
 	c.response.SuccessMessageResponse(w, "Delete master with id: "+masterId)
@@ -104,13 +102,13 @@ func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.
 		return
 	}
 
-	userEmail, err := c.auth.GetUserEmail(r)
-	if err != nil {
-		c.response.UnauthorizeUser(w)
+	user, ok := (r.Context().Value(utils.UserContextKey)).(*model.User)
+	if !ok {
+		c.response.BadRequestHandler(w)
 		return
 	}
 
-	c.service.Publish(data, "attribute.create", userEmail)
+	c.service.Publish(data, "attribute.create", user.Email)
 
 	c.response.SuccessMessageResponse(w, "Create attribute with label: "+attribute.Label)
 }
@@ -129,13 +127,13 @@ func (c *MasterReportController) DeleteAttribute(w http.ResponseWriter, r *http.
 		return
 	}
 
-	userEmail, err := c.auth.GetUserEmail(r)
-	if err != nil {
-		c.response.UnauthorizeUser(w)
+	user, ok := (r.Context().Value(utils.UserContextKey)).(*model.User)
+	if !ok {
+		c.response.BadRequestHandler(w)
 		return
 	}
 
-	c.service.Publish(data, "attribute.delete", userEmail)
+	c.service.Publish(data, "attribute.delete", user.Email)
 
 	attributeId := strconv.Itoa(int(attribute.ID))
 	c.response.SuccessMessageResponse(w, "Delete attribute with id: "+attributeId)

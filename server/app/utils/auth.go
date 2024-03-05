@@ -9,6 +9,12 @@ import (
 	"github.com/markbates/goth/providers/google"
 )
 
+type key string
+
+const (
+	UserContextKey key = "user"
+)
+
 var Store *sessions.CookieStore
 
 func AuthConfig() {

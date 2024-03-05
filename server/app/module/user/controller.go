@@ -39,7 +39,7 @@ func (c *UserController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	status, err := c.service.Publish(data, "user.create", "")
+	status, err := c.service.Publish(data, "user.create", "Unauthorize")
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, status, err)
 		return
@@ -61,7 +61,7 @@ func (c *UserController) Delete(w http.ResponseWriter, r *http.Request) {
 		c.response.InternalServerErrorHandler(w, 500, err)
 		return
 	}
-	c.service.Publish(data, "user.delete", "userEmail")
+	c.service.Publish(data, "user.delete", "Unauthorize")
 
 	userID := strconv.Itoa(int(user.ID))
 	c.response.SuccessMessageResponse(w, "Delete user with id: "+userID)
