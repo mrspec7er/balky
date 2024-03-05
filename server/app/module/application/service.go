@@ -1,16 +1,67 @@
 package application
 
 import (
-	"fmt"
+	"context"
 
 	"github.com/mrspec7er/balky/app/model"
+	"github.com/mrspec7er/balky/app/utility"
 )
 
 type ApplicationService struct {
-	app model.Application
+	app     model.Application
+	publish utility.Publisher
 }
 
-func (s ApplicationService) Create(req *model.Application) {
-	fmt.Println("RESULT APP:", req)
-	fmt.Println(s.app.Number)
+func (s *ApplicationService) Create(req *model.Application) (int, error) {
+	s.app = *req
+	err := s.app.Create()
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s *ApplicationService) FindMany() ([]*model.Application, int, error) {
+	apps, err := s.app.FindMany()
+	if err != nil {
+		return nil, 500, err
+	}
+
+	return apps, 201, nil
+}
+
+func (s *ApplicationService) FindOne(number string) (*model.Application, int, error) {
+	s.app.Number = number
+	app, err := s.app.FindOne()
+	if err != nil {
+		return nil, 500, err
+	}
+
+	return app, 201, nil
+}
+
+func (s *ApplicationService) Delete(req *model.Application) (int, error) {
+	s.app = *req
+	err := s.app.Delete()
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s *ApplicationService) Publish(data []byte, queueName string, userEmail string) (int, error) {
+	ctx := context.Background()
+
+	payload := utility.Payload{
+		Body:      data,
+		UserEmail: userEmail,
+	}
+	err := s.publish.SendMessage(ctx, queueName, &payload)
+	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
 }
