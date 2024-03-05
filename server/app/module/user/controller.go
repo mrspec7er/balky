@@ -6,14 +6,12 @@ import (
 	"strconv"
 
 	"github.com/mrspec7er/balky/app/model"
-	"github.com/mrspec7er/balky/app/module/auth"
 	"github.com/mrspec7er/balky/app/utils"
 )
 
 type UserController struct {
 	service  UserService
 	response utils.Response
-	auth     auth.AuthService
 }
 
 func (c *UserController) FindAll(w http.ResponseWriter, r *http.Request) {
@@ -63,13 +61,7 @@ func (c *UserController) Delete(w http.ResponseWriter, r *http.Request) {
 		c.response.InternalServerErrorHandler(w, 500, err)
 		return
 	}
-
-	userEmail, err := c.auth.GetUserEmail(r)
-	if err != nil {
-		c.response.UnauthorizeUser(w)
-		return
-	}
-	c.service.Publish(data, "user.delete", userEmail)
+	c.service.Publish(data, "user.delete", "userEmail")
 
 	userID := strconv.Itoa(int(user.ID))
 	c.response.SuccessMessageResponse(w, "Delete user with id: "+userID)

@@ -42,14 +42,15 @@ func (c *MasterReportController) Create(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	userEmail, err := c.auth.GetUserEmail(r)
-	if err != nil {
-		c.response.UnauthorizeUser(w)
+	user, ok := (r.Context().Value(auth.UserContextKey)).(*model.User)
+	if !ok {
+		c.response.BadRequestHandler(w)
 		return
 	}
-	c.service.Publish(data, "master.create", userEmail)
+	c.service.Publish(data, "master.create", user.Email)
 
 	c.response.SuccessMessageResponse(w, "Create master with name: "+master.Name)
+
 }
 
 func (c *MasterReportController) Delete(w http.ResponseWriter, r *http.Request) {

@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/mrspec7er/balky/app/module/auth"
 	"github.com/rabbitmq/amqp091-go"
 )
 
@@ -26,9 +27,10 @@ func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup) {
 
 func RouteConfig(router chi.Router) {
 	controller := &MasterReportController{}
+	middleware := &auth.AuthMiddleware{}
 
 	router.Get("/", controller.FindAll)
-	router.Post("/", controller.Create)
+	router.With(middleware.Authorize("admin")).Post("/", controller.Create)
 	router.Delete("/", controller.Delete)
 
 	router.Get("/attributes", controller.FindAllAttribute)
