@@ -36,6 +36,11 @@ func (u *User) FindMany() ([]User, error) {
 	return users, err
 }
 
+func (u *User) FindOne() (*User, error) {
+	err := u.store().Where("email = ?", u.Email).First(&u).Error
+	return u, err
+}
+
 func (u *User) Delete() error {
 	err := u.store().Delete(&u).Error
 	return err

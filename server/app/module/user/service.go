@@ -31,6 +31,16 @@ func (s UserService) FindMany() ([]model.User, int, error) {
 	return users, 201, nil
 }
 
+func (s UserService) FindOne(email string) (*model.User, int, error) {
+	s.user.Email = email
+	user, err := s.user.FindOne()
+	if err != nil {
+		return nil, 500, err
+	}
+
+	return user, 201, nil
+}
+
 func (s UserService) Delete(req *model.User) (int, error) {
 	s.user = *req
 	err := s.user.Delete()
