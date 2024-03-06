@@ -57,9 +57,8 @@ func (s MasterReportService) Publish(data []byte, queueName string, userEmail st
 	return 201, nil
 }
 
-func (s MasterReportService) CreateAttribute(req *model.Attribute) (int, error) {
-	s.attribute = *req
-	err := s.attribute.Create()
+func (s MasterReportService) CreateAttribute(req []*model.Attribute) (int, error) {
+	err := s.attribute.Create(req)
 	if err != nil {
 		return 500, err
 	}

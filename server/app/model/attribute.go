@@ -26,8 +26,8 @@ func (a *Attribute) store() *gorm.DB {
 	return utility.DB
 }
 
-func (a *Attribute) Create() error {
-	err := a.store().Create(&a).Error
+func (a *Attribute) Create(req []*Attribute) error {
+	err := a.store().Create(&req).Error
 	return err
 }
 

@@ -92,7 +92,7 @@ func (l *MasterReportListener) CreateAttribute(queue *amqp091.Channel, wg *sync.
 	}
 
 	for data := range messages {
-		attribute := &model.Attribute{}
+		attributes := []*model.Attribute{}
 
 		userEmail, ok := data.Headers["userEmail"].(string)
 		if !ok {
@@ -100,13 +100,13 @@ func (l *MasterReportListener) CreateAttribute(queue *amqp091.Channel, wg *sync.
 			continue
 		}
 
-		err := json.Unmarshal(data.Body, &attribute)
+		err := json.Unmarshal(data.Body, &attributes)
 		if err != nil {
 			l.logger.Publish(userEmail, 400, err.Error())
 			continue
 		}
 
-		status, err := l.service.CreateAttribute(attribute)
+		status, err := l.service.CreateAttribute(attributes)
 		if err != nil {
 			l.logger.Publish(userEmail, status, err.Error())
 			continue

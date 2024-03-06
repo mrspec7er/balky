@@ -31,9 +31,9 @@ func RouteConfig(router chi.Router) {
 
 	router.Get("/", controller.FindAll)
 	router.With(middleware.Authorize("admin")).Post("/", controller.Create)
-	router.Delete("/", controller.Delete)
+	router.With(middleware.Authorize("admin")).Delete("/", controller.Delete)
 
 	router.Get("/attributes", controller.FindAllAttribute)
-	router.Post("/attributes", controller.CreateAttribute)
-	router.Delete("/attributes", controller.DeleteAttribute)
+	router.With(middleware.Authorize("admin")).Post("/attributes", controller.CreateAttribute)
+	router.With(middleware.Authorize("admin")).Delete("/attributes", controller.DeleteAttribute)
 }

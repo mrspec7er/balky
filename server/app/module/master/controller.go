@@ -89,14 +89,14 @@ func (c *MasterReportController) FindAllAttribute(w http.ResponseWriter, r *http
 }
 
 func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.Request) {
-	attribute := &model.Attribute{}
+	attributes := []*model.Attribute{}
 
-	if err := json.NewDecoder(r.Body).Decode(&attribute); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&attributes); err != nil {
 		c.response.BadRequestHandler(w)
 		return
 	}
 
-	data, err := json.Marshal(attribute)
+	data, err := json.Marshal(attributes)
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, 500, err)
 		return
@@ -110,7 +110,7 @@ func (c *MasterReportController) CreateAttribute(w http.ResponseWriter, r *http.
 
 	c.service.Publish(data, "attribute.create", user.Email)
 
-	c.response.SuccessMessageResponse(w, "Create attribute with label: "+attribute.Label)
+	c.response.SuccessMessageResponse(w, "Create attribute")
 }
 
 func (c *MasterReportController) DeleteAttribute(w http.ResponseWriter, r *http.Request) {
