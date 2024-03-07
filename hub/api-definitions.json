@@ -60,6 +60,15 @@
       }
     },
     {
+      "name": "content.delete",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
       "name": "logger",
       "vhost": "/",
       "durable": true,
@@ -78,7 +87,25 @@
       }
     },
     {
+      "name": "app.delete",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
       "name": "app.create",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
+      "name": "content.create",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
@@ -155,6 +182,14 @@
     {
       "source": "balky",
       "vhost": "/",
+      "destination": "app.delete",
+      "destination_type": "queue",
+      "routing_key": "app.delete",
+      "arguments": {}
+    },
+    {
+      "source": "balky",
+      "vhost": "/",
       "destination": "attribute.create",
       "destination_type": "queue",
       "routing_key": "attribute.create",
@@ -166,6 +201,22 @@
       "destination": "attribute.delete",
       "destination_type": "queue",
       "routing_key": "attribute.delete",
+      "arguments": {}
+    },
+    {
+      "source": "balky",
+      "vhost": "/",
+      "destination": "content.create",
+      "destination_type": "queue",
+      "routing_key": "content.create",
+      "arguments": {}
+    },
+    {
+      "source": "balky",
+      "vhost": "/",
+      "destination": "content.delete",
+      "destination_type": "queue",
+      "routing_key": "content.delete",
       "arguments": {}
     },
     {
