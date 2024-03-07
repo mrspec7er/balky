@@ -30,7 +30,7 @@ func (m *MasterReport) Create() error {
 
 func (m *MasterReport) FindMany() ([]MasterReport, error) {
 	masters := []MasterReport{}
-	err := m.store().Find(&masters).Error
+	err := m.store().Preload("Attributes").Find(&masters).Error
 	return masters, err
 }
 
