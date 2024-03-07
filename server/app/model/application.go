@@ -14,12 +14,12 @@ type Application struct {
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 
-	MasterReportID uint
+	MasterReportID uint          `json:"masterReportId"`
 	MasterReport   *MasterReport `json:"masterReport"`
 
 	Contents []*Content `json:"contents"`
 
-	UserID uint
+	UserID uint  `json:"userId"`
 	User   *User `json:"user"`
 }
 
