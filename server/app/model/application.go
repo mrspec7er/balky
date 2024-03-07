@@ -34,12 +34,12 @@ func (a *Application) Create() error {
 
 func (a *Application) FindMany() ([]*Application, error) {
 	applications := []*Application{}
-	err := a.store().Find(&applications).Error
+	err := a.store().Preload("Contents").Preload("User").Preload("MasterReport").Find(&applications).Error
 	return applications, err
 }
 
 func (a *Application) FindOne() (*Application, error) {
-	err := a.store().Where("number = ?", a.Number).First(&a).Error
+	err := a.store().Where("number = ?", a.Number).Preload("Contents").Preload("User").Preload("MasterReport").First(&a).Error
 	return a, err
 }
 
