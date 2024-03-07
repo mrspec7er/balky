@@ -33,7 +33,7 @@ func (a *Attribute) Create(req []*Attribute) error {
 
 func (a *Attribute) FindMany() ([]Attribute, error) {
 	attributes := []Attribute{}
-	err := a.store().Find(&attributes).Error
+	err := a.store().Preload("MasterReport").Find(&attributes).Error
 	return attributes, err
 }
 
