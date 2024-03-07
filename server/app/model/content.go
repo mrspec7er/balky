@@ -26,7 +26,7 @@ func (a *Content) Create(contents []*Content) error {
 
 func (a *Content) FindMany(appId string) ([]*Content, error) {
 	contents := []*Content{}
-	err := a.store().Where("application_number = ?", appId).Find(&contents).Error
+	err := a.store().Where("application_number = ?", appId).Preload("Application").Preload("Attribute").Find(&contents).Error
 	return contents, err
 }
 
