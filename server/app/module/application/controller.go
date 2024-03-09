@@ -27,6 +27,11 @@ func (c *ApplicationController) FindAll(w http.ResponseWriter, r *http.Request) 
 }
 
 func (c *ApplicationController) Create(w http.ResponseWriter, r *http.Request) {
+	user, ok := (r.Context().Value(utility.UserContextKey)).(*model.User)
+	if !ok {
+		c.response.BadRequestHandler(w)
+		return
+	}
 	app := &model.Application{}
 
 	if err := json.NewDecoder(r.Body).Decode(&app); err != nil {
@@ -34,17 +39,14 @@ func (c *ApplicationController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	app.UserEmail = user.Email
+
 	data, err := json.Marshal(app)
 	if err != nil {
 		c.response.InternalServerErrorHandler(w, 500, err)
 		return
 	}
 
-	user, ok := (r.Context().Value(utility.UserContextKey)).(*model.User)
-	if !ok {
-		c.response.BadRequestHandler(w)
-		return
-	}
 	c.service.Publish(data, "app.create", user.Email)
 
 	c.response.SuccessMessageResponse(w, "Create application with number: "+app.Number)

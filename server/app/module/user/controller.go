@@ -3,7 +3,6 @@ package user
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 
 	"github.com/mrspec7er/balky/app/model"
 	"github.com/mrspec7er/balky/app/utility"
@@ -63,6 +62,5 @@ func (c *UserController) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 	c.service.Publish(data, "user.delete", "Unauthorize")
 
-	userID := strconv.Itoa(int(user.ID))
-	c.response.SuccessMessageResponse(w, "Delete user with id: "+userID)
+	c.response.SuccessMessageResponse(w, "Delete user with email: "+user.Email)
 }

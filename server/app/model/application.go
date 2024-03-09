@@ -19,8 +19,8 @@ type Application struct {
 
 	Contents []*Content `json:"contents"`
 
-	UserID uint  `json:"userId"`
-	User   *User `json:"user"`
+	UserEmail string `json:"userEmail"`
+	User      *User  `json:"user" gorm:"foreignKey:UserEmail"`
 }
 
 func (a *Application) store() *gorm.DB {
