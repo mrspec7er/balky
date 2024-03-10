@@ -21,6 +21,8 @@ type Application struct {
 
 	UserEmail string `json:"userEmail"`
 	User      *User  `json:"user" gorm:"foreignKey:UserEmail"`
+
+	Reaction *Reaction `json:"reaction"`
 }
 
 func (a *Application) store() *gorm.DB {
