@@ -179,3 +179,36 @@ func (l *ApplicationListener) CreateReaction(queue *amqp091.Channel, wg *sync.Wa
 		}
 	}
 }
+
+func (l *ApplicationListener) DeleteReaction(queue *amqp091.Channel, wg *sync.WaitGroup, queueName string, consumerTag string) {
+	defer wg.Done()
+
+	ctx := context.Background()
+	messages, err := queue.ConsumeWithContext(ctx, queueName, consumerTag, true, false, false, false, nil)
+
+	if err != nil {
+		l.logger.Publish("Server", 500, err.Error())
+	}
+
+	for data := range messages {
+		reaction := &InsertReaction{}
+
+		userEmail, ok := data.Headers["userEmail"].(string)
+		if !ok {
+			l.logger.Publish(userEmail, 400, "Missing user credentials")
+			continue
+		}
+
+		err := json.Unmarshal(data.Body, &reaction)
+		if err != nil {
+			l.logger.Publish(userEmail, 400, err.Error())
+			continue
+		}
+
+		status, err := l.service.DeleteReaction(reaction)
+		if err != nil {
+			l.logger.Publish(userEmail, status, err.Error())
+			continue
+		}
+	}
+}

@@ -26,6 +26,9 @@ func HandlerConfig(q *amqp091.Channel, wg *sync.WaitGroup) {
 
 	wg.Add(1)
 	go l.CreateReaction(q, wg, "reaction.create", "reaction.create."+os.Getenv("SERVER_ID"))
+
+	wg.Add(1)
+	go l.DeleteReaction(q, wg, "reaction.delete", "reaction.delete."+os.Getenv("SERVER_ID"))
 }
 
 func RouteConfig(router chi.Router) {
@@ -41,4 +44,5 @@ func RouteConfig(router chi.Router) {
 	router.With(middleware.Authorize("admin")).Delete("/contents", controller.DeleteContent)
 
 	router.With(middleware.Authorize("admin")).Post("/reactions", controller.CreateReaction)
+	router.With(middleware.Authorize("admin")).Delete("/reactions", controller.DeleteReaction)
 }

@@ -135,3 +135,35 @@ func (s *ApplicationService) CreateReaction(req *InsertReaction) (int, error) {
 
 	return 201, nil
 }
+
+func (s *ApplicationService) DeleteReaction(req *InsertReaction) (int, error) {
+	s.reaction = model.Reaction{
+		ApplicationNumber: req.ApplicationNumber,
+	}
+	r, err := s.reaction.FindOne()
+	if err != nil {
+		return 400, err
+	}
+
+	if !slices.Contains(r.LikesBy, req.UserEmail) {
+		return 400, fmt.Errorf("user haven't like this application")
+	} else {
+		likesBy := []string{}
+		for _, lb := range r.LikesBy {
+			if lb != req.UserEmail {
+				likesBy = append(likesBy, lb)
+			}
+		}
+		reactionPayload := &model.Reaction{
+			ID:                r.ID,
+			ApplicationNumber: req.ApplicationNumber,
+			LikesBy:           likesBy,
+		}
+		err := s.reaction.Create(reactionPayload)
+		if err != nil {
+			return 500, err
+		}
+	}
+
+	return 201, nil
+}

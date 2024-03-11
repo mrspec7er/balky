@@ -168,5 +168,28 @@ func (c *ApplicationController) CreateReaction(w http.ResponseWriter, r *http.Re
 	c.service.Publish(data, "reaction.create", user.Email)
 
 	c.response.SuccessMessageResponse(w, "Create reaction: "+reaction.ApplicationNumber)
+}
 
+func (c *ApplicationController) DeleteReaction(w http.ResponseWriter, r *http.Request) {
+	user, ok := (r.Context().Value(utility.UserContextKey)).(*model.User)
+	if !ok {
+		c.response.BadRequestHandler(w)
+		return
+	}
+	reaction := &InsertReaction{}
+
+	if err := json.NewDecoder(r.Body).Decode(&reaction); err != nil {
+		c.response.BadRequestHandler(w)
+		return
+	}
+
+	data, err := json.Marshal(reaction)
+	if err != nil {
+		c.response.InternalServerErrorHandler(w, 500, err)
+		return
+	}
+
+	c.service.Publish(data, "reaction.delete", user.Email)
+
+	c.response.SuccessMessageResponse(w, "Delete reaction: "+reaction.ApplicationNumber)
 }
