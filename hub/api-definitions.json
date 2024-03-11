@@ -96,6 +96,15 @@
       }
     },
     {
+      "name": "reaction.create",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    },
+    {
       "name": "app.create",
       "vhost": "/",
       "durable": true,
@@ -233,6 +242,14 @@
       "destination": "master.delete",
       "destination_type": "queue",
       "routing_key": "master.delete",
+      "arguments": {}
+    },
+    {
+      "source": "balky",
+      "vhost": "/",
+      "destination": "reaction.create",
+      "destination_type": "queue",
+      "routing_key": "reaction.create",
       "arguments": {}
     },
     {

@@ -2,15 +2,21 @@ package application
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"slices"
 
+	"github.com/lib/pq"
 	"github.com/mrspec7er/balky/app/model"
 	"github.com/mrspec7er/balky/app/utility"
+	"gorm.io/gorm"
 )
 
 type ApplicationService struct {
-	app     model.Application
-	publish utility.Publisher
-	content model.Content
+	app      model.Application
+	publish  utility.Publisher
+	content  model.Content
+	reaction model.Reaction
 }
 
 func (s *ApplicationService) Create(req *model.Application) (int, error) {
@@ -90,6 +96,40 @@ func (s *ApplicationService) DeleteContent(req *model.Content) (int, error) {
 	s.content = *req
 	err := s.content.Delete()
 	if err != nil {
+		return 500, err
+	}
+
+	return 201, nil
+}
+
+func (s *ApplicationService) CreateReaction(req *InsertReaction) (int, error) {
+	s.reaction = model.Reaction{
+		ApplicationNumber: req.ApplicationNumber,
+	}
+	r, err := s.reaction.FindOne()
+
+	if err == nil {
+		if !slices.Contains(r.LikesBy, req.UserEmail) {
+			s.reaction.LikesBy = append(s.reaction.LikesBy, req.UserEmail)
+			err := s.reaction.Create(&s.reaction)
+			if err != nil {
+				return 500, err
+			}
+		} else {
+			return 400, fmt.Errorf("user already like this application")
+		}
+	}
+
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		reactionPayload := &model.Reaction{
+			ApplicationNumber: req.ApplicationNumber,
+			LikesBy:           pq.StringArray{req.UserEmail},
+		}
+		err := s.reaction.Create(reactionPayload)
+		if err != nil {
+			return 500, err
+		}
+	} else {
 		return 500, err
 	}
 

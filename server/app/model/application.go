@@ -36,7 +36,7 @@ func (a *Application) Create() error {
 
 func (a *Application) FindMany() ([]*Application, error) {
 	applications := []*Application{}
-	err := a.store().Preload("Contents").Preload("User").Preload("MasterReport").Find(&applications).Error
+	err := a.store().Preload("Contents").Preload("User").Preload("Reaction").Preload("MasterReport").Find(&applications).Error
 	return applications, err
 }
 

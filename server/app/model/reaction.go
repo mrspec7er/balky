@@ -1,33 +1,45 @@
 package model
 
 import (
+	"time"
+
+	"github.com/lib/pq"
 	"github.com/mrspec7er/balky/app/utility"
 	"gorm.io/gorm"
 )
 
 type Reaction struct {
-	ApplicationNumber string       `json:"applicationNumber" gorm:"primaryKey"`
-	Application       *Application `json:"application" gorm:"foreignKey:ApplicationNumber"`
+	ID        uint           `json:"id" gorm:"primaryKey"`
+	LikesBy   pq.StringArray `json:"likesBy" gorm:"type:text[]"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 
-	Users []User `json:"users" gorm:"many2many:user_reactions;foreignKey:ApplicationNumber;References:Email;"`
+	ApplicationNumber string       `json:"applicationNumber"`
+	Application       *Application `json:"application" gorm:"foreignKey:ApplicationNumber"`
 }
 
 func (a *Reaction) store() *gorm.DB {
 	return utility.DB
 }
 
-func (a *Reaction) Create(reactions []*Reaction) error {
-	err := a.store().Create(&reactions).Error
+func (a *Reaction) Create(reaction *Reaction) error {
+	err := a.store().Save(&reaction).Error
 	return err
 }
 
-func (a *Reaction) FindMany(appId string) ([]*Reaction, error) {
+func (a *Reaction) FindMany(appNumber string) ([]*Reaction, error) {
 	reactions := []*Reaction{}
-	err := a.store().Where("application_number = ?", appId).Preload("Application").Preload("Attribute").Find(&reactions).Error
+	err := a.store().Where("application_number = ?", appNumber).Preload("Application").Preload("Attribute").Find(&reactions).Error
 	return reactions, err
 }
 
+func (a *Reaction) FindOne() (*Reaction, error) {
+	err := a.store().Where("application_number = ?", a.ApplicationNumber).First(&a).Error
+	return a, err
+}
+
 func (a *Reaction) Delete() error {
-	err := a.store().Delete(&a).Error
+	err := a.store().Where("id = ?", a.ID).Delete(&a).Error
 	return err
 }

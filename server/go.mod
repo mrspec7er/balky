@@ -6,6 +6,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/gorilla/sessions v1.2.2
 	github.com/joho/godotenv v1.5.1
+	github.com/lib/pq v1.10.9
 	github.com/markbates/goth v1.79.0
 	github.com/rabbitmq/amqp091-go v1.9.0
 	gorm.io/driver/postgres v1.5.6
