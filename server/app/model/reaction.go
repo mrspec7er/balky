@@ -24,8 +24,7 @@ func (a *Reaction) store() *gorm.DB {
 }
 
 func (a *Reaction) Create(reaction *Reaction) error {
-	err := a.store().Save(&reaction).Error
-	return err
+	return a.store().Save(&reaction).Error
 }
 
 func (a *Reaction) FindMany(appNumber string) ([]*Reaction, error) {
@@ -37,9 +36,4 @@ func (a *Reaction) FindMany(appNumber string) ([]*Reaction, error) {
 func (a *Reaction) FindOne() (*Reaction, error) {
 	err := a.store().Where("application_number = ?", a.ApplicationNumber).First(&a).Error
 	return a, err
-}
-
-func (a *Reaction) Delete() error {
-	err := a.store().Where("id = ?", a.ID).Delete(&a).Error
-	return err
 }

@@ -22,8 +22,7 @@ func (l *Logger) store() *gorm.DB {
 }
 
 func (l *Logger) Create() error {
-	err := l.store().Create(&l).Error
-	return err
+	return l.store().Create(&l).Error
 }
 
 func (l *Logger) FindMany() ([]Logger, error) {
@@ -33,6 +32,5 @@ func (l *Logger) FindMany() ([]Logger, error) {
 }
 
 func (l *Logger) Delete() error {
-	err := l.store().Delete(&l).Error
-	return err
+	return l.store().Delete(&l).Error
 }

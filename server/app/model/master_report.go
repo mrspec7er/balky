@@ -24,8 +24,7 @@ func (m *MasterReport) store() *gorm.DB {
 }
 
 func (m *MasterReport) Create() error {
-	err := m.store().Create(&m).Error
-	return err
+	return m.store().Create(&m).Error
 }
 
 func (m *MasterReport) FindMany() ([]MasterReport, error) {
@@ -35,6 +34,5 @@ func (m *MasterReport) FindMany() ([]MasterReport, error) {
 }
 
 func (m *MasterReport) Delete() error {
-	err := m.store().Delete(&m).Error
-	return err
+	return m.store().Delete(&m).Error
 }

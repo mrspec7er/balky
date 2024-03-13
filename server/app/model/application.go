@@ -30,8 +30,8 @@ func (a *Application) store() *gorm.DB {
 }
 
 func (a *Application) Create() error {
-	err := a.store().Create(&a).Error
-	return err
+	return a.store().Create(&a).Error
+
 }
 
 func (a *Application) FindMany() ([]*Application, error) {
@@ -46,6 +46,5 @@ func (a *Application) FindOne() (*Application, error) {
 }
 
 func (a *Application) Delete() error {
-	err := a.store().Delete(&a).Error
-	return err
+	return a.store().Delete(&a).Error
 }

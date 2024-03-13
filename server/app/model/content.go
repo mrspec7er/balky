@@ -20,8 +20,7 @@ func (a *Content) store() *gorm.DB {
 }
 
 func (a *Content) Create(contents []*Content) error {
-	err := a.store().Create(&contents).Error
-	return err
+	return a.store().Create(&contents).Error
 }
 
 func (a *Content) FindMany(appId string) ([]*Content, error) {
@@ -31,6 +30,5 @@ func (a *Content) FindMany(appId string) ([]*Content, error) {
 }
 
 func (a *Content) Delete() error {
-	err := a.store().Delete(&a).Error
-	return err
+	return a.store().Delete(&a).Error
 }

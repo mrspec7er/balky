@@ -27,8 +27,7 @@ func (a *Attribute) store() *gorm.DB {
 }
 
 func (a *Attribute) Create(req []*Attribute) error {
-	err := a.store().Create(&req).Error
-	return err
+	return a.store().Create(&req).Error
 }
 
 func (a *Attribute) FindMany() ([]Attribute, error) {
@@ -38,6 +37,5 @@ func (a *Attribute) FindMany() ([]Attribute, error) {
 }
 
 func (a *Attribute) Delete() error {
-	err := a.store().Delete(&a).Error
-	return err
+	return a.store().Delete(&a).Error
 }
