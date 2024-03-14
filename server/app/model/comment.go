@@ -35,3 +35,9 @@ func (c *Comment) Create() error {
 func (c *Comment) Delete() error {
 	return c.store().Delete(&c).Error
 }
+
+func (a *Comment) FindMany(appNumber string) ([]*Comment, error) {
+	comments := []*Comment{}
+	err := a.store().Where("application_number = ?", appNumber).Preload("Application").Preload("Reference").Preload("User").Find(&comments).Error
+	return comments, err
+}
