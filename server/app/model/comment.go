@@ -14,11 +14,14 @@ type Comment struct {
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 
+	ReferenceID uint     `json:"referenceId"`
+	Reference   *Comment `json:"reference"`
+
 	UserEmail string   `json:"userEmail"`
 	User      *Comment `json:"user" gorm:"foreignKey:UserEmail"`
 
-	ReferenceID uint     `json:"referenceId"`
-	Reference   *Comment `json:"reference"`
+	ApplicationNumber string       `json:"applicationNumber"`
+	Application       *Application `json:"application" gorm:"foreignKey:ApplicationNumber"`
 }
 
 func (c *Comment) store() *gorm.DB {
