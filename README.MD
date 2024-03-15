@@ -13,3 +13,5 @@ Business Feature:
 - Report data or public issue to local government
 - Monitoring and contribute to all current issue that still not maintain or under development
 - Check statistic and report form all issue reported
+- Give reaction to any post
+- Add comment on issue to provide more information about the topic
