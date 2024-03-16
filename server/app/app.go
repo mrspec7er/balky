@@ -51,5 +51,6 @@ func Migration(db *gorm.DB) {
 		&model.Content{},
 		&model.Logger{},
 		&model.Reaction{},
+		&model.Comment{},
 	)
 }

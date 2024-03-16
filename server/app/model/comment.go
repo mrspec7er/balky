@@ -14,11 +14,11 @@ type Comment struct {
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 
-	ReferenceID uint     `json:"referenceId"`
+	ReferenceID *uint    `json:"referenceId"`
 	Reference   *Comment `json:"reference"`
 
-	UserEmail string   `json:"userEmail"`
-	User      *Comment `json:"user" gorm:"foreignKey:UserEmail"`
+	UserEmail string `json:"userEmail" gorm:"type:varchar(64)"`
+	User      *User  `json:"user" gorm:"foreignKey:UserEmail"`
 
 	ApplicationNumber string       `json:"applicationNumber"`
 	Application       *Application `json:"application" gorm:"foreignKey:ApplicationNumber"`

@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/mrspec7er/balky/app/module/application"
 	"github.com/mrspec7er/balky/app/module/auth"
+	"github.com/mrspec7er/balky/app/module/comment"
 	"github.com/mrspec7er/balky/app/module/logger"
 	"github.com/mrspec7er/balky/app/module/master"
 	"github.com/mrspec7er/balky/app/module/user"
@@ -25,6 +26,7 @@ func loadRoutes() *chi.Mux {
 	router.Route("/loggers", logger.RouteConfig)
 	router.Route("/auth", auth.RouteConfig)
 	router.Route("/applications", application.RouteConfig)
+	router.Route("/comments", comment.RouteConfig)
 
 	return router
 }
